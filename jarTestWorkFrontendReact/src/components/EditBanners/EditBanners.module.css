@@ -1,0 +1,122 @@
+.editcategories{
+  display: grid;
+
+  grid-template-areas:
+          "n c";
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 2fr 10fr;
+  /*grid-gap: 10px;*/
+}
+
+.nav{
+  grid-area: n;
+  width: 200px;
+  height: auto;
+  border: 1px solid black;
+  padding: 0px;
+  margin-left: 10px;
+}
+
+.nav *{
+  width: 200px;
+  margin-left: 0;
+}
+
+
+
+.search {
+  width: 196px;
+  padding: 0;
+}
+
+.categoryLabel{
+  font-weight: 630;
+  text-align: center;
+}
+
+
+.formclass{
+  grid-area: c;
+  margin-left: 20px;
+  border: 1px solid black;
+  height: 600px;
+}
+
+.inputHeading{
+  border-bottom: 1px solid black;
+}
+
+.inputHeading p{
+  margin-left: 10px;
+}
+
+.inputBlock{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+.inputBlock div{
+  margin-left: 21px;
+  margin-top: 8px;
+}
+
+
+.buttonBlock{
+  height: 83%;
+}
+
+.activeLink{
+  background: cornflowerblue;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-bottom: 4px;
+  padding-top:  4px;
+}
+
+.button {
+  background: cornflowerblue;
+  text-align: center;
+  padding-bottom: 6px;
+  padding-top: 6px;
+}
+
+.notification{
+  width: 500px;
+  height: auto;
+  background: red;
+  padding: 4px;
+}
+
+.notification p{
+  color: burlywood;
+  font-size: 11px;
+  line-height: 4px;
+}
+
+.savebutton{
+  width: 70px;
+  height: 30px;
+  background: #000111;
+  display: inline-block;
+}
+
+.savebutton p{
+  width: 30px;
+  color: aliceblue;
+  margin: 0 auto;
+}
+
+.deletebutton{
+  width: 70px;
+  height: 30px;
+  background: red;
+  display: inline-block;
+  float: right;
+}
+
+.deletebutton p{
+  width: 35px;
+  color: aliceblue;
+  margin: 0 auto;
+}
