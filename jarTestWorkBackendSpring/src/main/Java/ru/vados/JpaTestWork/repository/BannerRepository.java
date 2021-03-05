@@ -9,9 +9,8 @@ import java.util.List;
 
 @Repository
 public interface BannerRepository extends CrudRepository<Banner,Long> {
-    Banner findByName(String name);
 
-    @Query(value = "SELECT DISTINCT * FROM banners b WHERE b.category_id=?1", nativeQuery=true)
-    List<Banner> findBannersByCategoryId(Long category_id);
+    @Query(value = "SELECT DISTINCT * FROM banners b WHERE b.categoryId=?1", nativeQuery=true)
+    List<Banner> findBannersByCategoryId(Long categoryId);
 
 }

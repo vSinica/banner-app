@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,8 +46,9 @@ public class RequestController {
     ObjectMapper objectMapper = new ObjectMapper();
 
     @CrossOrigin
+    @Transactional
     @GetMapping("/bid")
-    private ResponseEntity<Object> getAdv(HttpServletRequest request, @RequestParam("category")String req_name) throws UnknownHostException, JsonProcessingException, ParseException {
+    public ResponseEntity<Object> getAdv(HttpServletRequest request, @RequestParam("category")String req_name) throws UnknownHostException, JsonProcessingException, ParseException {
         System.out.println("user-agent: "+ request.getHeader("User-Agent"));
         System.out.println("ip ------  " + Inet4Address.getLocalHost().getHostAddress());
         System.out.println("Req category from request - "+req_name);
@@ -66,8 +68,8 @@ public class RequestController {
         List<Banner> baners = bannerRepository.findBannersByCategoryId(category.get().getId());
 
         Request newRequest = new Request();
-        newRequest.setUser_agent(request.getHeader("User-Agent"));
-        newRequest.setIp_address(Inet4Address.getLocalHost().getHostAddress());
+        newRequest.setUserAgent(request.getHeader("User-Agent"));
+        newRequest.setIpAddress(Inet4Address.getLocalHost().getHostAddress());
 
         java.util.Date date = new java.util.Date();
         java.sql.Timestamp timestamp = new java.sql.Timestamp(date.getTime());
@@ -84,7 +86,7 @@ public class RequestController {
         for (Banner baner : baners) {
             boolean hasRequestForThisDayAndthisIp = false;
             for (Request req : requestLastdayList) {
-                if(req.getIp_address()==newRequest.getIp_address() && req.getUser_agent()==newRequest.getUser_agent()){
+                if(req.getIpAddress()==newRequest.getIpAddress() && req.getUserAgent()==newRequest.getUserAgent()){
                     hasRequestForThisDayAndthisIp = true;
                 }
                 if (req.getBanner().getId()==(baner.getId())) {

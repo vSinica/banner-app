@@ -28,13 +28,13 @@ public class Request {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "banner_id")
+    @JoinColumn(name = "bannerId")
     @JsonBackReference
     private Banner banner;
 
-    private String user_agent;
+    private String userAgent;
 
-    private String ip_address;
+    private String ipAddress;
 
     private Timestamp datetime;
 
@@ -57,20 +57,20 @@ public class Request {
         this.banner = banner;
     }
 
-    public String getUser_agent() {
-        return user_agent;
+    public String getUserAgent() {
+        return userAgent;
     }
 
-    public void setUser_agent(String user_agent) {
-        this.user_agent = user_agent;
+    public void setUserAgent(String userAgent) {
+        this.userAgent = userAgent;
     }
 
-    public String getIp_address() {
-        return ip_address;
+    public String getIpAddress() {
+        return ipAddress;
     }
 
-    public void setIp_address(String ip_address) {
-        this.ip_address = ip_address;
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
     }
 
     public Timestamp getDatetime() {

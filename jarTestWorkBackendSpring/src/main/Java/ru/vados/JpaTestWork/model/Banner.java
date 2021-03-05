@@ -1,7 +1,6 @@
 package ru.vados.JpaTestWork.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -52,9 +51,10 @@ public class Banner {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "category_id")
-    @JsonBackReference
-    private Category category_id;
+    @JoinColumn(name = "categoryId")
+    @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="name", scope = Category.class)
+    @JsonIdentityReference(alwaysAsId=true)
+    private Category categoryId;
 
     @Column(nullable = false)
     private String content;
@@ -97,12 +97,12 @@ public class Banner {
         this.price = price;
     }
 
-    public Category getCategory_id() {
-        return category_id;
+    public Category getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory_id(Category category_id) {
-        this.category_id = category_id;
+    public void setCategoryId(Category categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getContent() {

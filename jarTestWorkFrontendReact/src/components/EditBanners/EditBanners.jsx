@@ -205,9 +205,6 @@ export default class EditBanners extends Component {
                     allCategoryNames: data,
                     isLoaded: true
                 });
-
-
-
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(this.props.url, status, err.toString());
@@ -223,30 +220,9 @@ export default class EditBanners extends Component {
                 this.state.bannerName = item.name;
                 this.state.price = item.price;
                 this.state.bannerText = item.content;
+                this.state.currentCategory = item.categoryId;
             }
         });
-
-        this.state.allCategoryNames.map(categories => {
-            /// console.log("item name ->  "+ item.name);
-            if (categories.banners.name === this.state.bannerName) {
-
-                this.state.currentCategory = categories.name;
-            }
-            Object.keys(categories).map((baner, index) => {
-                ///console.log(categories[baner]);
-                if (index == 1) {
-                    Object.keys(categories[baner]).map((banerIterator, indexSec) => {
-                        /// console.log(categories[baner][banerIterator]); console.log("index----"+ index);
-                        if (this.state.bannerName === categories[baner][banerIterator].name &&
-                            this.state.bannerText === categories[baner][banerIterator].content) {
-                            this.state.currentCategory = categories.name;
-                            ///console.log(categories.name + " its nameeeeeeeeeee");
-                        }
-                    })
-                };
-            });
-        });
-
     }
 
     getClassforLink = (id) => {
@@ -351,7 +327,7 @@ export default class EditBanners extends Component {
                                                     defaultValue={this.state.currentCategory}
                                                     key={this.state.currentCategory} >
                                         {allCategoryNames.map(item => (
-                                            <option value={item.name} >{item.name}</option>
+                                            <option value={item} >{item}</option>
                                         ))}
                                     </select>
                                 </div>

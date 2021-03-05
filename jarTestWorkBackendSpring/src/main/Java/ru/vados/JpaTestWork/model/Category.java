@@ -1,6 +1,8 @@
 package ru.vados.JpaTestWork.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -14,15 +16,15 @@ public class Category {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO, generator="native")
     @GenericGenerator(name = "native", strategy = "native")
-    @Column(name = "category_id", updatable = false, nullable = false, unique=true)
+    @Column(name = "id", updatable = false, nullable = false, unique=true)
     private Long id;
 
-    @OneToMany(fetch = FetchType.EAGER,
+    @OneToMany(fetch = FetchType.LAZY,
             cascade = { CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE},
             orphanRemoval = true,
-            mappedBy = "category_id"
+            mappedBy = "categoryId"
     )
-    @JsonManagedReference
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
     private List<Banner> banners = new ArrayList<>();
 
     public void addBanner(Banner banner){
@@ -41,7 +43,7 @@ public class Category {
     private String name;
 
     @Column(nullable = false)
-    private String req_name;
+    private String reqName;
 
     @Column(nullable = false)
     private Boolean deleted;
@@ -73,13 +75,9 @@ public class Category {
         this.name = name;
     }
 
-    public String getReq_name() {
-        return req_name;
-    }
+    public String getReqName() { return reqName; }
 
-    public void setReq_name(String req_name) {
-        this.req_name = req_name;
-    }
+    public void setReqName(String reqName) {this.reqName = reqName; }
 
     public Boolean getDeleted() {
         return deleted;

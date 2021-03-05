@@ -176,7 +176,7 @@ export default class EditCategories extends Component {
 
         this.state.data.map(item => {
             if (item.id === id)
-                this.state.categoryReqId = item.req_name
+                this.state.categoryReqId = item.reqName;
         });
     }
 

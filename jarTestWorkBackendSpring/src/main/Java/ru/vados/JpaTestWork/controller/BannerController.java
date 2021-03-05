@@ -3,6 +3,7 @@ package ru.vados.JpaTestWork.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ru.vados.JpaTestWork.model.Banner;
 import ru.vados.JpaTestWork.model.Category;
@@ -35,9 +36,10 @@ public class BannerController {
     ObjectMapper objectMapper = new ObjectMapper();
 
     @CrossOrigin
+    @Transactional
     @PostMapping("/AddBanner")
     @ResponseBody
-    private String addBanner(@RequestBody(required = false) HashMap<String,Object> bannerData) throws JsonProcessingException {
+    public String addBanner(@RequestBody(required = false) HashMap<String,Object> bannerData) throws JsonProcessingException {
         System.out.println("banner name " + (String) bannerData.get("bannerName"));
         System.out.println("banner text " + (String)bannerData.get("bannerText"));
         System.out.println("current category " + bannerData.get("currentCategory"));
@@ -55,16 +57,17 @@ public class BannerController {
         banner.setDeleted(false);
 
         category.addBanner(banner);
-        banner.setCategory_id(category);
+        banner.setCategoryId(category);
         bannerRepository.save(banner);
 
         return null;
     }
 
     @CrossOrigin
+    @Transactional
     @PostMapping("/UpdateBanner")
     @ResponseBody
-    private String updateBanner(@RequestBody(required = false)HashMap<String,Object> bannerData) throws JsonProcessingException {
+    public String updateBanner(@RequestBody(required = false)HashMap<String,Object> bannerData) throws JsonProcessingException {
         System.out.println("banner name " + (String) bannerData.get("bannerName"));
         System.out.println("banner text " + (String)bannerData.get("bannerText"));
         System.out.println("current category " + bannerData.get("currentCategory"));
@@ -80,9 +83,9 @@ public class BannerController {
             return objectMapper.writeValueAsString("No banner with id: " + bannerData.get("id"));
         }
 
-        if (banner.get().getCategory_id().getName() != bannerData.get("currentCategory")) {
+        if (banner.get().getCategoryId().getName() != bannerData.get("currentCategory")) {
 
-            Category oldcategory = banner.get().getCategory_id();
+            Category oldcategory = banner.get().getCategoryId();
             oldcategory.removeBanner(banner.get());
             categoryRepository.save(oldcategory);
 
@@ -95,7 +98,7 @@ public class BannerController {
             newcategory.addBanner(banner.get());
             categoryRepository.save(newcategory);
 
-            banner.get().setCategory_id(newcategory);
+            banner.get().setCategoryId(newcategory);
             bannerRepository.save(banner.get());
         }
 
@@ -110,9 +113,10 @@ public class BannerController {
     }
 
     @CrossOrigin
+    @Transactional
     @PostMapping("/DeleteBanner")
     @ResponseBody
-    private String deleteBanner(@RequestBody(required = false)HashMap<String,Object> bannerData) throws JsonProcessingException {
+    public String deleteBanner(@RequestBody(required = false)HashMap<String,Object> bannerData) throws JsonProcessingException {
         System.out.println("banner id on delete:  " + bannerData.get("bannerId"));
         System.out.println("category name of this banner:  " + bannerData.get("category_id"));
 
@@ -136,17 +140,18 @@ public class BannerController {
         category.removeBanner(banner.get());
         categoryRepository.save(category);
 
-        banner.get().setCategory_id(null);
+        banner.get().setCategoryId(null);
         banner.get().setDeleted(true);
         bannerRepository.save(banner.get());
         return  null;
     }
 
     @CrossOrigin
+    @Transactional
     @PostMapping("/GetCategoryNames")
     @ResponseBody
-    private String getCategoryNames() throws JsonProcessingException {
-        return objectMapper.writeValueAsString(categoryRepository.findAll());
+    public String getCategoryNames() throws JsonProcessingException {
+        return objectMapper.writeValueAsString(categoryRepository.findAllByName());
     }
 
 

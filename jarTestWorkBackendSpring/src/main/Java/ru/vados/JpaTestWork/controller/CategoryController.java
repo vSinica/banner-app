@@ -3,6 +3,7 @@ package ru.vados.JpaTestWork.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ru.vados.JpaTestWork.model.Banner;
 import ru.vados.JpaTestWork.model.Category;
@@ -32,9 +33,10 @@ public class CategoryController {
     ObjectMapper objectMapper = new ObjectMapper();
 
     @CrossOrigin
+    @Transactional
     @PostMapping("/AddCategory")
     @ResponseBody
-    private String addCategory(@RequestBody(required = false)HashMap<String,String> newCategoryData) throws JsonProcessingException {
+    public String addCategory(@RequestBody(required = false)HashMap<String,String> newCategoryData) throws JsonProcessingException {
         System.out.println(newCategoryData.get("category_name")+"    "+newCategoryData.get("categoryReqId"));
 
         String categoryReqId = null;
@@ -53,7 +55,7 @@ public class CategoryController {
 
         Category category = new Category();
         category.setName(categoryName);
-        category.setReq_name(categoryReqId);
+        category.setReqName(categoryReqId);
         category.setDeleted(false);
         categoryRepository.save(category);
 
@@ -61,16 +63,18 @@ public class CategoryController {
     }
 
     @CrossOrigin
+    @Transactional
     @PostMapping("/GetCategories")
-    private String getCategories() throws JsonProcessingException {
+    public String getCategories() throws JsonProcessingException {
 
         return objectMapper.writeValueAsString(categoryRepository.findAll());
     }
 
     @CrossOrigin
+    @Transactional
     @PostMapping("/DeleteCategory")
     @ResponseBody
-    private String deleteCategory(@RequestBody(required = false)HashMap<String,Long> categoryData) throws JsonProcessingException {
+    public String deleteCategory(@RequestBody(required = false)HashMap<String,Long> categoryData) throws JsonProcessingException {
         System.out.println(categoryData.get("idCategory")+"   idCategory to delete");
 
         Optional<Category> category;
@@ -102,9 +106,10 @@ public class CategoryController {
     }
 
     @CrossOrigin
+    @Transactional
     @PostMapping("/UpdateCategory")
     @ResponseBody
-    private String updateCategory(@RequestBody(required = false) HashMap<String,String> categoryData) throws JsonProcessingException {
+    public String updateCategory(@RequestBody(required = false) HashMap<String,String> categoryData) throws JsonProcessingException {
         System.out.println(categoryData.get("idCategory")+"   idCategory to update");
         System.out.println(categoryData.get("category_name")+"   name category to update");
         System.out.println(categoryData.get("categoryReqId")+"   req_name category to update");
@@ -127,7 +132,7 @@ public class CategoryController {
         Optional<Category> category = categoryRepository.findById((long) categoryId);
 
         category.get().setName(categoryName);
-        category.get().setReq_name(categoryReqId);
+        category.get().setReqName(categoryReqId);
 
         categoryRepository.save(category.get());
 
@@ -135,9 +140,10 @@ public class CategoryController {
     }
 
     @CrossOrigin
+    @Transactional
     @PostMapping("/GetBanners")
     @ResponseBody
-    private String getBanners() throws JsonProcessingException {
+    public String getBanners() throws JsonProcessingException {
         return objectMapper.writeValueAsString(bannerRepository.findAll());
     }
 
