@@ -40,10 +40,6 @@ public class BannerController {
     @PostMapping("/AddBanner")
     @ResponseBody
     public String addBanner(@RequestBody(required = false) HashMap<String,Object> bannerData) throws JsonProcessingException {
-        System.out.println("banner name " + (String) bannerData.get("bannerName"));
-        System.out.println("banner text " + (String)bannerData.get("bannerText"));
-        System.out.println("current category " + bannerData.get("currentCategory"));
-        System.out.println("price " + new BigDecimal(bannerData.get("price").toString()));
 
         Category category = categoryRepository.findByName((String) bannerData.get("currentCategory"));
         if(category==null) {
@@ -68,11 +64,6 @@ public class BannerController {
     @PostMapping("/UpdateBanner")
     @ResponseBody
     public String updateBanner(@RequestBody(required = false)HashMap<String,Object> bannerData) throws JsonProcessingException {
-        System.out.println("banner name " + (String) bannerData.get("bannerName"));
-        System.out.println("banner text " + (String)bannerData.get("bannerText"));
-        System.out.println("current category " + bannerData.get("currentCategory"));
-        System.out.println("price " + new BigDecimal(bannerData.get("price").toString()));
-        System.out.println("current id   " + bannerData.get("id"));
 
         Integer IntBannerId = (Integer) bannerData.get("id");
         Long bannerId = IntBannerId.longValue();
@@ -83,7 +74,7 @@ public class BannerController {
             return objectMapper.writeValueAsString("No banner with id: " + bannerData.get("id"));
         }
 
-        if (banner.get().getCategoryId().getName() != bannerData.get("currentCategory")) {
+        if (banner.get().getCategoryId().getName().equals(bannerData.get("currentCategory"))) {
 
             Category oldcategory = banner.get().getCategoryId();
             oldcategory.removeBanner(banner.get());
@@ -117,8 +108,6 @@ public class BannerController {
     @PostMapping("/DeleteBanner")
     @ResponseBody
     public String deleteBanner(@RequestBody(required = false)HashMap<String,Object> bannerData) throws JsonProcessingException {
-        System.out.println("banner id on delete:  " + bannerData.get("bannerId"));
-        System.out.println("category name of this banner:  " + bannerData.get("category_id"));
 
         Integer IntBannerId = (Integer) bannerData.get("bannerId");
         Long bannerId = IntBannerId.longValue();
@@ -131,11 +120,6 @@ public class BannerController {
         if(category==null){
             return  objectMapper.writeValueAsString("no banner with name = "+ bannerData.get("category_id"));
         }
-
-        for (Banner baner: category.getBanners()
-        ) { System.out.println("Baner in category  "+ baner.getName());
-
-        };
 
         category.removeBanner(banner.get());
         categoryRepository.save(category);
@@ -153,6 +137,4 @@ public class BannerController {
     public String getCategoryNames() throws JsonProcessingException {
         return objectMapper.writeValueAsString(categoryRepository.findAllByName());
     }
-
-
 }

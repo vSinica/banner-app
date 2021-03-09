@@ -65,7 +65,7 @@ public class RequestController {
             return ResponseEntity.noContent().header("Error", "category is null").build();
         }
 
-        List<Banner> baners = bannerRepository.findBannersByCategoryId(category.get().getId());
+        List<Banner> banners = bannerRepository.findBannersByCategoryId(category.get().getId());
 
         Request newRequest = new Request();
         newRequest.setUserAgent(request.getHeader("User-Agent"));
@@ -83,25 +83,25 @@ public class RequestController {
 
         List<Banner> banersMaxCost = new ArrayList<>();
         float maxCost = 0;
-        for (Banner baner : baners) {
+        for (Banner banner : banners) {
             boolean hasRequestForThisDayAndthisIp = false;
             for (Request req : requestLastdayList) {
-                if(req.getIpAddress()==newRequest.getIpAddress() && req.getUserAgent()==newRequest.getUserAgent()){
+                if((req.getIpAddress()==newRequest.getIpAddress()) && (req.getUserAgent()==newRequest.getUserAgent())){
                     hasRequestForThisDayAndthisIp = true;
                 }
-                if (req.getBanner().getId()==(baner.getId())) {
+                if (req.getBanner().getId()==(banner.getId())) {
                     hasRequestForThisDayAndthisIp = true;
                 }
             }
 
             if (!hasRequestForThisDayAndthisIp) {
-                if(maxCost == baner.getPrice()){
-                    banersMaxCost.add(baner);
+                if(maxCost == banner.getPrice()){
+                    banersMaxCost.add(banner);
                 }
-                if (maxCost < baner.getPrice()) {
+                if (maxCost < banner.getPrice()) {
                     banersMaxCost.clear();
-                    maxCost = baner.getPrice();
-                    banersMaxCost.add(baner);
+                    maxCost = banner.getPrice();
+                    banersMaxCost.add(banner);
                 }
             }
         }

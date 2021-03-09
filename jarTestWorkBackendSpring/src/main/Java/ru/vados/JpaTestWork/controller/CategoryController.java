@@ -37,12 +37,11 @@ public class CategoryController {
     @PostMapping("/AddCategory")
     @ResponseBody
     public String addCategory(@RequestBody(required = false)HashMap<String,String> newCategoryData) throws JsonProcessingException {
-        System.out.println(newCategoryData.get("category_name")+"    "+newCategoryData.get("categoryReqId"));
 
         String categoryReqId = null;
         String categoryName = null;
 
-        if(newCategoryData.get("category_name")!=null || (String)newCategoryData.get("category_name")!="")
+        if(newCategoryData.get("category_name")!= null || !newCategoryData.get("category_name").equals(""))
             categoryName = newCategoryData.get("category_name");
         else objectMapper.writeValueAsString("Имя категории некорректно ");
 
@@ -75,7 +74,6 @@ public class CategoryController {
     @PostMapping("/DeleteCategory")
     @ResponseBody
     public String deleteCategory(@RequestBody(required = false)HashMap<String,Long> categoryData) throws JsonProcessingException {
-        System.out.println(categoryData.get("idCategory")+"   idCategory to delete");
 
         Optional<Category> category;
 
@@ -110,31 +108,28 @@ public class CategoryController {
     @PostMapping("/UpdateCategory")
     @ResponseBody
     public String updateCategory(@RequestBody(required = false) HashMap<String,String> categoryData) throws JsonProcessingException {
-        System.out.println(categoryData.get("idCategory")+"   idCategory to update");
-        System.out.println(categoryData.get("category_name")+"   name category to update");
-        System.out.println(categoryData.get("categoryReqId")+"   req_name category to update");
 
         int categoryId = Integer.parseInt(categoryData.get("idCategory"));
 
         String categoryReqId = null;
         String categoryName = null;
 
-
-        if(categoryData.get("category_name")!=null || (String)categoryData.get("category_name")!="")
+        if(categoryData.get("category_name")!=null || !categoryData.get("category_name").equals(""))
             categoryName = categoryData.get("category_name");
         else objectMapper.writeValueAsString("Имя категории некорректно ");
 
 
-        if(categoryData.get("categoryReqId")!=null || (String) categoryData.get("categoryReqId")!="")
+        if(categoryData.get("categoryReqId")!=null || !categoryData.get("categoryReqId").equals(""))
             categoryReqId = categoryData.get("categoryReqId");
         else objectMapper.writeValueAsString("Request id категории некорректно ");
 
         Optional<Category> category = categoryRepository.findById((long) categoryId);
 
-        category.get().setName(categoryName);
-        category.get().setReqName(categoryReqId);
-
-        categoryRepository.save(category.get());
+        if(category.isPresent()) {
+            category.get().setName(categoryName);
+            category.get().setReqName(categoryReqId);
+            categoryRepository.save(category.get());
+        }
 
         return null;
     }
