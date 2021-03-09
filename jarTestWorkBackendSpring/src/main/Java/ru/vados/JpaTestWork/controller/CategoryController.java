@@ -35,7 +35,6 @@ public class CategoryController {
     @CrossOrigin
     @Transactional
     @PostMapping("/AddCategory")
-    @ResponseBody
     public String addCategory(@RequestBody(required = false)HashMap<String,String> newCategoryData) throws JsonProcessingException {
 
         String categoryReqId = null;
@@ -72,7 +71,6 @@ public class CategoryController {
     @CrossOrigin
     @Transactional
     @PostMapping("/DeleteCategory")
-    @ResponseBody
     public String deleteCategory(@RequestBody(required = false)HashMap<String,Long> categoryData) throws JsonProcessingException {
 
         Optional<Category> category;
@@ -106,7 +104,6 @@ public class CategoryController {
     @CrossOrigin
     @Transactional
     @PostMapping("/UpdateCategory")
-    @ResponseBody
     public String updateCategory(@RequestBody(required = false) HashMap<String,String> categoryData) throws JsonProcessingException {
 
         int categoryId = Integer.parseInt(categoryData.get("idCategory"));
@@ -137,7 +134,6 @@ public class CategoryController {
     @CrossOrigin
     @Transactional
     @PostMapping("/GetBanners")
-    @ResponseBody
     public String getBanners() throws JsonProcessingException {
         return objectMapper.writeValueAsString(bannerRepository.findAll());
     }

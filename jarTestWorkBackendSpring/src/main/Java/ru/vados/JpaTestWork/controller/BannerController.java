@@ -11,7 +11,6 @@ import ru.vados.JpaTestWork.repository.BannerRepository;
 import ru.vados.JpaTestWork.repository.CategoryRepository;
 import ru.vados.JpaTestWork.repository.RequestRepository;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -36,9 +35,8 @@ public class BannerController {
     ObjectMapper objectMapper = new ObjectMapper();
 
     @CrossOrigin
-    @Transactional
     @PostMapping("/AddBanner")
-    @ResponseBody
+    @Transactional
     public String addBanner(@RequestBody(required = false) HashMap<String,Object> bannerData) throws JsonProcessingException {
 
         Category category = categoryRepository.findByName((String) bannerData.get("currentCategory"));
@@ -60,9 +58,8 @@ public class BannerController {
     }
 
     @CrossOrigin
-    @Transactional
     @PostMapping("/UpdateBanner")
-    @ResponseBody
+    @Transactional
     public String updateBanner(@RequestBody(required = false)HashMap<String,Object> bannerData) throws JsonProcessingException {
 
         Integer IntBannerId = (Integer) bannerData.get("id");
@@ -104,9 +101,8 @@ public class BannerController {
     }
 
     @CrossOrigin
-    @Transactional
     @PostMapping("/DeleteBanner")
-    @ResponseBody
+    @Transactional
     public String deleteBanner(@RequestBody(required = false)HashMap<String,Object> bannerData) throws JsonProcessingException {
 
         Integer IntBannerId = (Integer) bannerData.get("bannerId");
@@ -131,9 +127,7 @@ public class BannerController {
     }
 
     @CrossOrigin
-    @Transactional
     @PostMapping("/GetCategoryNames")
-    @ResponseBody
     public String getCategoryNames() throws JsonProcessingException {
         return objectMapper.writeValueAsString(categoryRepository.findAllByName());
     }
