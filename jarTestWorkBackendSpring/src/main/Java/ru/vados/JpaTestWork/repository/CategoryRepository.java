@@ -17,10 +17,10 @@ public interface CategoryRepository extends CrudRepository<Category,Long> {
 
     Boolean existsCategoryById(Long categoryId);
 
-    @Query(value = "SELECT c.id FROM category c where c.reqName =?1", nativeQuery = true)
-    Long findCategoryIdByReqName(String reqName);
+    @Query("SELECT c.id FROM Category c where c.reqName =:reqName")
+    Long findCategoryIdByReqName(@Param("reqName") String reqName);
 
-    @Query(value = "SELECT c.name FROM category c", nativeQuery = true)
+    @Query("SELECT c.name FROM Category c")
     List<String> findAllByName();
 
 }
