@@ -29,7 +29,6 @@ public class Request {
     @ManyToOne(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "bannerId")
-    @JsonBackReference
     private Banner banner;
 
     private String userAgent;

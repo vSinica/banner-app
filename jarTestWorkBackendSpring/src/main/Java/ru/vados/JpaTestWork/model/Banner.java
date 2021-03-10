@@ -27,12 +27,12 @@ public class Banner {
     @Column(name = "id", updatable = false, nullable = false, unique=true)
     private Long id;
 
-    @OneToMany(fetch = FetchType.EAGER,
+    @OneToMany(fetch = FetchType.LAZY,
             cascade = { CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE},
             orphanRemoval = true,
             mappedBy = "banner"
     )
-    @JsonManagedReference
+    @JsonIgnore
     private List<Request> requests = new ArrayList<>();
 
     public void addRequest(Request request){
@@ -49,7 +49,7 @@ public class Banner {
     @Column(nullable = false)
     private float price;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "categoryId")
     @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="name", scope = Category.class)

@@ -18,9 +18,7 @@ import java.util.Optional;
 public class BannerController {
 
     CategoryRepository categoryRepository;
-
     BannerRepository bannerRepository;
-
     RequestRepository requestRepository;
 
     @Autowired
@@ -130,5 +128,12 @@ public class BannerController {
     @PostMapping("/GetCategoryNames")
     public String getCategoryNames() throws JsonProcessingException {
         return objectMapper.writeValueAsString(categoryRepository.findAllByName());
+    }
+
+    @CrossOrigin
+    @Transactional
+    @PostMapping("/GetBanners")
+    public String getBanners() throws JsonProcessingException {
+        return objectMapper.writeValueAsString(bannerRepository.findAll());
     }
 }

@@ -44,6 +44,7 @@ public class RequestController {
     ObjectMapper objectMapper = new ObjectMapper();
 
     @CrossOrigin
+    @Transactional
     @GetMapping("/bid")
     public ResponseEntity<Object> getAdv(HttpServletRequest request, @RequestParam("category")String reqName) throws UnknownHostException, JsonProcessingException, ParseException {
 
@@ -76,10 +77,11 @@ public class RequestController {
         for (Banner banner : banners) {
             boolean hasRequestForThisDayAndthisIp = false;
             for (Request req : requestLastdayList) {
-                if((req.getIpAddress()==newRequest.getIpAddress()) && (req.getUserAgent()==newRequest.getUserAgent())){
+
+                if(!(req.getIpAddress().equals(newRequest.getIpAddress())) && !(req.getUserAgent().equals(newRequest.getUserAgent()))){
                     hasRequestForThisDayAndthisIp = true;
                 }
-                if (req.getBanner().getId()==(banner.getId())) {
+                if (req.getBanner().getId().equals(banner.getId())) {
                     hasRequestForThisDayAndthisIp = true;
                 }
             }

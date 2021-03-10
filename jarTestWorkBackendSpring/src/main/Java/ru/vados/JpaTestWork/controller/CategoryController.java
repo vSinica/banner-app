@@ -129,11 +129,6 @@ public class CategoryController {
         return null;
     }
 
-    @CrossOrigin
-    @Transactional
-    @PostMapping("/GetBanners")
-    public String getBanners() throws JsonProcessingException {
-        return objectMapper.writeValueAsString(bannerRepository.findAll());
-    }
+
 
 }
