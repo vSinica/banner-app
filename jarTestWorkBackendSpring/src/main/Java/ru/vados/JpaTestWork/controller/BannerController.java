@@ -108,7 +108,7 @@ public class BannerController {
         Integer IntBannerId = (Integer) bannerData.get("bannerId");
         Long bannerId = IntBannerId.longValue();
         Optional<Banner> banner = bannerRepository.findById(bannerId);
-        if(banner.get()==null){
+        if(!banner.isPresent()){
             return  objectMapper.writeValueAsString("no banner with id = "+bannerData.get("bannerId"));
         }
 

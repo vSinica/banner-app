@@ -16,9 +16,7 @@ import java.util.*;
 public class CategoryController {
 
     CategoryRepository categoryRepository;
-
     BannerRepository bannerRepository;
-
     RequestRepository requestRepository;
 
     @Autowired

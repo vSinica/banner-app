@@ -29,9 +29,7 @@ import java.util.Random;
 public class RequestController {
 
     CategoryRepository categoryRepository;
-
     BannerRepository bannerRepository;
-
     RequestRepository requestRepository;
 
     @Autowired
@@ -46,17 +44,13 @@ public class RequestController {
     ObjectMapper objectMapper = new ObjectMapper();
 
     @CrossOrigin
-    @Transactional
     @GetMapping("/bid")
-    public ResponseEntity<Object> getAdv(HttpServletRequest request, @RequestParam("category")String req_name) throws UnknownHostException, JsonProcessingException, ParseException {
-        System.out.println("user-agent: "+ request.getHeader("User-Agent"));
-        System.out.println("ip ------  " + Inet4Address.getLocalHost().getHostAddress());
-        System.out.println("Req category from request - "+req_name);
+    public ResponseEntity<Object> getAdv(HttpServletRequest request, @RequestParam("category")String reqName) throws UnknownHostException, JsonProcessingException, ParseException {
 
-        Long category_id = categoryRepository.findCategoryIdByReqName(req_name);
+        Long category_id = categoryRepository.findCategoryIdbByReqName(reqName);
         if(category_id==null) {
             return ResponseEntity.noContent().header("Error",
-                    objectMapper.writeValueAsString("No category with req name: "+ req_name)).build();
+                    objectMapper.writeValueAsString("No category with req name: "+ reqName)).build();
         }
 
         Optional<Category> category = categoryRepository.findById(category_id);
@@ -65,7 +59,7 @@ public class RequestController {
             return ResponseEntity.noContent().header("Error", "category is null").build();
         }
 
-        List<Banner> banners = bannerRepository.findBannersByCategoryId(category.get().getId());
+        List<Banner> banners = bannerRepository.findByCategoryId(category.get());
 
         Request newRequest = new Request();
         newRequest.setUserAgent(request.getHeader("User-Agent"));
@@ -76,10 +70,6 @@ public class RequestController {
         newRequest.setDatetime(timestamp);
 
         List<Request> requestLastdayList = requestRepository.findLastDayRequest();
-        System.out.println(" last day request:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
-        for (Request req: requestLastdayList) {
-            System.out.println(req.getDatetime()+"  -datetime | baner id -  " + req.getBanner().getId());
-        }
 
         List<Banner> banersMaxCost = new ArrayList<>();
         float maxCost = 0;
@@ -110,16 +100,14 @@ public class RequestController {
             return ResponseEntity.noContent().header("Content-Length", "0").build();
         }
 
-        System.out.println("banner.size()  "+   banersMaxCost.size());
-        int randomBaner = new Random().nextInt(banersMaxCost.size());
-        System.out.println("randomBaner =  " + randomBaner);
+        int randomBanner = new Random().nextInt(banersMaxCost.size());
 
-        newRequest.setBanner(banersMaxCost.get(randomBaner));
+        newRequest.setBanner(banersMaxCost.get(randomBanner));
         requestRepository.save(newRequest);
 
-        banersMaxCost.get(randomBaner).addRequest(newRequest);
-        bannerRepository.save(banersMaxCost.get(randomBaner));
+        banersMaxCost.get(randomBanner).addRequest(newRequest);
+        bannerRepository.save(banersMaxCost.get(randomBanner));
 
-        return ResponseEntity.ok(objectMapper.writeValueAsString(banersMaxCost.get(randomBaner).getContent()));
+        return ResponseEntity.ok(objectMapper.writeValueAsString(banersMaxCost.get(randomBanner).getContent()));
     }
 }
