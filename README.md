@@ -1,7 +1,11 @@
-Решение состоит из двух проектов в двух папках. Одна с бэкэндом, а другая с фронтом.
 
-Бэкенд на Spring в папке jarTestWorkBackendSpring. Локальный сервер - tomcat 9.0.39. Для того чтобы создались все таблицы нужно чтобы была mysql база на 3306 порту под названием jarsoft(либо можете исправить на свои) все настройки базы по пути src\main\resources\db.properties При первом запуске в файле 
-db.properties исправьте hibernate.hbm2ddl.auto=update на hibernate.hbm2ddl.auto=create , для того чтобы hibernate создал таблицы, потом исправьте обратно иначе при каждом запуске будут снова пустые таблицы. 
+This is service for create commerical banner and get him. Banner have category. Get him on http://localhost:8080/bid?category="CATEGORY_NAME". Banner can get once a day. 
 
-Фронтенд на React в папке jarTestWorkFrontendReact для запуска должен быть установлен Node.js. А для того чтобы установить react вам нужно в консоли 
-зайти в папку с проектом(там где package.json) и выполнить две команды одна, а потом другая:1) npm init 2) npm install --save react react-dom  и дождаться выполнения каждой. А потом вам нужно каждый раз для запуска проекта опять заходить в консоли в папку проекта и писать там npm start. После старта проекта вас автоматически перекинет на страницу браузера http://localhost:3000 , но если этого не произошло то впишите вручную.
+Project consist of two sub project. Backend spring part in jarTestWorkBackendSpring and frontend in jarTestWorkFrontendReact. In idea need open each sub project like a separate project. 
+
+Backend in jarTestWorkBackendSpring work with tomcat 9.0.39. Run configuration settings is regular. Data base is mysql on 3306 port db, settings in db.properties file. Your need create db with name jarsoft.
+
+Frontend on react in jarTestWorkFrontendReact for run need Node.js. For intstall you need in folder jarTestWorkFrontendReact in cmd do npm install --save react react-dom and wait download. After you need start for this in cmd npm start. App run on http://localhost:3000.
+
+
+
