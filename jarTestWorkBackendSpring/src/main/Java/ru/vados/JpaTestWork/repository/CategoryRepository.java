@@ -21,6 +21,6 @@ public interface CategoryRepository extends CrudRepository<Category,Long> {
     Long findCategoryIdbByReqName(@Param("reqName") String reqName);
 
     @Query("SELECT c.name FROM Category c")
-    List<String> findAllByName();
+    List<String> getAllCategoryNames();
 
 }

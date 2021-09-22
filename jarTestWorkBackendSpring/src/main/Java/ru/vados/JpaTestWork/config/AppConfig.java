@@ -1,6 +1,9 @@
 package ru.vados.JpaTestWork.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -18,8 +21,9 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 
+
 @Configuration
-@PropertySource("classpath:db.properties")
+@PropertySource("classpath:application.properties")
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "ru.vados.JpaTestWork.repository")
 public class AppConfig {
@@ -37,6 +41,8 @@ public class AppConfig {
 
       return dataSource;
    }
+
+
 
    @Bean
    public LocalContainerEntityManagerFactoryBean entityManagerFactory(){
