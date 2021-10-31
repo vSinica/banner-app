@@ -3,24 +3,19 @@ package ru.vados.JpaTestWork;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
-import ru.vados.JpaTestWork.CategoryController;
+import ru.vados.JpaTestWork.controller.CategoryController;
 import ru.vados.JpaTestWork.config.AppConfig;
 import ru.vados.JpaTestWork.model.Category;
 import ru.vados.JpaTestWork.repository.CategoryRepository;
 import ru.vados.JpaTestWork.service.CategoryService;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
