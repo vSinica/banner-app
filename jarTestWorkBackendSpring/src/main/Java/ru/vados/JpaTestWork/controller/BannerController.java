@@ -3,6 +3,8 @@ package ru.vados.JpaTestWork.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +20,7 @@ import ru.vados.JpaTestWork.service.CategoryService;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin
 public class BannerController {
 
     CategoryService categoryService;
@@ -35,37 +38,37 @@ public class BannerController {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
-    @CrossOrigin
     @PostMapping("/AddBanner")
     @Transactional
-    public String addBanner(@RequestBody BannerDto bannerData) throws JsonProcessingException {
-        return bannerService.addBanner(bannerData);
+    public ResponseEntity<String> addBanner(@RequestBody BannerDto bannerData) {
+        return ResponseEntity.status(HttpStatus.OK).
+                body(bannerService.addBanner(bannerData));
     }
 
-    @CrossOrigin
     @PostMapping("/UpdateBanner")
     @Transactional
-    public String updateBanner(@RequestBody BannerDto bannerData) throws JsonProcessingException {
-        return bannerService.updateBanner(bannerData);
+    public ResponseEntity<String> updateBanner(@RequestBody BannerDto bannerData) {
+        return ResponseEntity.status(HttpStatus.OK).
+                body(bannerService.updateBanner(bannerData));
     }
 
-    @CrossOrigin
     @PostMapping("/DeleteBanner")
     @Transactional
-    public String deleteBanner(@RequestBody BannerDto bannerData) throws JsonProcessingException {
-        return bannerService.deleteBanner(bannerData);
+    public ResponseEntity<String> deleteBanner(@RequestBody BannerDto bannerData) {
+        return ResponseEntity.status(HttpStatus.OK).
+                body(bannerService.deleteBanner(bannerData));
     }
 
-    @CrossOrigin
     @PostMapping("/GetCategoryNames")
-    public String getCategoryNames() throws JsonProcessingException {
-        return objectMapper.writeValueAsString(categoryService.getAllCategoryNames());
+    public ResponseEntity<String> getCategoryNames() throws JsonProcessingException {
+        return ResponseEntity.status(HttpStatus.OK).
+                body(objectMapper.writeValueAsString(categoryService.getAllCategoryNames()));
     }
 
-    @CrossOrigin
     @Transactional
     @PostMapping("/GetBanners")
-    public String getBanners() throws JsonProcessingException {
-        return objectMapper.writeValueAsString(bannerService.findAllBanners());
+    public ResponseEntity<String> getBanners() throws JsonProcessingException {
+        return ResponseEntity.status(HttpStatus.OK).
+                body(objectMapper.writeValueAsString(bannerService.findAllBanners()));
     }
 }

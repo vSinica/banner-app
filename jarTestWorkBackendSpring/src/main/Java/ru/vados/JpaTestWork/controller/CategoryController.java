@@ -3,6 +3,8 @@ package ru.vados.JpaTestWork.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ru.vados.JpaTestWork.DTO.CategoryDto;
@@ -15,6 +17,7 @@ import ru.vados.JpaTestWork.service.impl.CategoryServiceImpl;
 import java.util.*;
 
 @RestController
+@CrossOrigin
 public class CategoryController {
 
     BannerRepository bannerRepository;
@@ -31,32 +34,32 @@ public class CategoryController {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
-    @CrossOrigin
     @Transactional
     @PostMapping("/AddCategory")
-    public String addCategory(@RequestBody CategoryDto newCategoryData) throws JsonProcessingException {
-        return categoryService.addCategory(newCategoryData);
+    public ResponseEntity<String> addCategory(@RequestBody CategoryDto newCategoryData) throws JsonProcessingException {
+        return ResponseEntity.status(HttpStatus.OK).
+                body(categoryService.addCategory(newCategoryData));
     }
 
-    @CrossOrigin
     @Transactional
     @PostMapping("/GetCategories")
-    public String getCategories() throws JsonProcessingException {
-        return objectMapper.writeValueAsString(categoryService.findAllCategory());
+    public ResponseEntity<String> getCategories() throws JsonProcessingException {
+        return ResponseEntity.status(HttpStatus.OK).
+                body(objectMapper.writeValueAsString(categoryService.findAllCategory()));
     }
 
-    @CrossOrigin
     @Transactional
     @PostMapping("/DeleteCategory")
-    public String deleteCategory(@RequestBody CategoryDto categoryData) throws JsonProcessingException {
-        return categoryService.deleteCategory(categoryData);
+    public ResponseEntity<String> deleteCategory(@RequestBody CategoryDto categoryData) throws JsonProcessingException {
+        return ResponseEntity.status(HttpStatus.OK).
+                body(categoryService.deleteCategory(categoryData));
     }
 
-    @CrossOrigin
     @Transactional
     @PostMapping("/UpdateCategory")
-    public String updateCategory(@RequestBody CategoryDto categoryData) throws JsonProcessingException {
-       return categoryService.updateCategory(categoryData);
+    public ResponseEntity<String> updateCategory(@RequestBody CategoryDto categoryData) throws JsonProcessingException {
+       return  ResponseEntity.status(HttpStatus.OK).
+              body(categoryService.updateCategory(categoryData));
     }
 
 

@@ -116,8 +116,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Iterable<Category> findAllCategory() {
-        return categoryRepository.findAll();
+    public List<Category> findAllCategory() {
+        return categoryRepository.findAllByDeletedFalse();
     }
 
     @Override
