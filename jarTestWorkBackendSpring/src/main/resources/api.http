@@ -1,0 +1,70 @@
+
+###
+POST http://localhost:8080/AddCategory
+Content-Type: application/json
+
+{
+  "categoryName": "category1",
+  "categoryReqId": "category1reqId"
+}
+
+###
+POST http://localhost:8080/UpdateCategory
+Content-Type: application/json
+
+{
+  "categoryName": "category1 updated",
+  "categoryReqId": "category1reqId updated",
+  "idCategory": 1
+}
+
+###
+POST http://localhost:8080/GetCategories
+
+
+###
+POST http://localhost:8080/DeleteCategory
+Content-Type: application/json
+
+{
+  "idCategory": 1
+}
+
+
+###
+POST http://localhost:8080/AddBanner
+Content-Type: application/json
+
+{
+  "categoryName": "category1",
+  "bannerName": "banner1Name",
+  "bannerText": "banner1Text",
+  "price": 222
+}
+
+###
+POST http://localhost:8080/UpdateBanner
+Content-Type: application/json
+
+{
+  "categoryName": "category1",
+  "bannerName": "banner1NameUpdated",
+  "bannerText": "banner1TextUpdated",
+  "price": 222,
+  "id": 1
+}
+
+###
+POST http://localhost:8080/DeleteBanner
+Content-Type: application/json
+
+{
+  "id": 1
+}
+
+###
+POST http://localhost:8080/GetBanners
+
+###
+GET http://localhost:8080/bid?reqName=category1reqId
+
