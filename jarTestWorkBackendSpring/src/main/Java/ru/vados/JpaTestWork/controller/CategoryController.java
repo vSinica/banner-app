@@ -1,4 +1,4 @@
-package ru.vados.JpaTestWork.controller;
+package ru.vados.JpaTestWork.Controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
