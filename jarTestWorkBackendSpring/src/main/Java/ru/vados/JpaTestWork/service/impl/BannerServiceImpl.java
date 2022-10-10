@@ -1,33 +1,36 @@
-package ru.vados.JpaTestWork.service.impl;
+package ru.vados.JpaTestWork.Service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.vados.JpaTestWork.DTO.BannerDto;
-import ru.vados.JpaTestWork.model.Banner;
-import ru.vados.JpaTestWork.model.Category;
-import ru.vados.JpaTestWork.repository.BannerRepository;
-import ru.vados.JpaTestWork.service.BannerService;
-import ru.vados.JpaTestWork.service.CategoryService;
+import org.springframework.transaction.annotation.Transactional;
+import ru.vados.JpaTestWork.Dto.BannerDto;
+import ru.vados.JpaTestWork.Entity.Banner;
+import ru.vados.JpaTestWork.Entity.Category;
+import ru.vados.JpaTestWork.Repository.BannerRepository;
+import ru.vados.JpaTestWork.Repository.CategoryRepository;
+import ru.vados.JpaTestWork.Service.BannerService;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class BannerServiceImpl implements BannerService {
    
-    BannerRepository bannerRepository;
-    CategoryService categoryService;
-    
-    @Autowired
-    public BannerServiceImpl(BannerRepository bannerRepository, CategoryService categoryService) {
-        this.bannerRepository = bannerRepository;
-        this.categoryService = categoryService;
-    }
-    
-    
-    public String addBanner(BannerDto bannerData) {
-        Category category = categoryService.findByCategoryName(bannerData.getCurrentCategory());
-        if(category==null) {
-            return "No category with name: "+bannerData.getCurrentCategory();
+    private final BannerRepository bannerRepository;
+    private final CategoryRepository categoryRepository;
+
+    @Override
+    @Transactional
+    public String addBanner(BannerDto.BannerCreate bannerData) {
+
+        Optional<Category> optCategory = categoryRepository.findByName(bannerData.getCategoryName());
+
+        Category category;
+        if(optCategory.isEmpty()) {
+            return "No category with name: "+bannerData.getCategoryName();
+        } else {
+            category = optCategory.get();
         }
 
         Banner banner = new Banner();
@@ -37,79 +40,88 @@ public class BannerServiceImpl implements BannerService {
         banner.setDeleted(false);
 
         category.addBanner(banner);
-        banner.setCategoryId(category);
+        banner.setCategory(category);
         bannerRepository.save(banner);
         
         return null;
     }
 
-    public String updateBanner(BannerDto bannerData){
+    @Override
+    @Transactional
+    public String updateBanner(BannerDto.BannerUpdate bannerData){
         Long bannerId = bannerData.getId();
 
-        Optional<Banner> banner = bannerRepository.findById(bannerId);
-        if(!banner.isPresent()){
+        Optional<Banner> optBanner = bannerRepository.findById(bannerId);
+        Banner banner;
+        if(optBanner.isEmpty()){
             return "No banner with id: " + bannerData.getId();
+        } else {
+            banner = optBanner.get();
         }
 
-        if (banner.get().getCategoryId().getName().equals(bannerData.getCurrentCategory())){
+        if (!banner.getCategory().getName().equals(bannerData.getCategoryName())){
 
-            Category oldCategory = banner.get().getCategoryId();
-            oldCategory.removeBanner(banner.get());
-            categoryService.saveCategory(oldCategory);
+            Category oldCategory = banner.getCategory();
+            oldCategory.removeBanner(banner);
+            categoryRepository.save(oldCategory);
 
-            Category newCategory = categoryService.findByCategoryName(bannerData.getCurrentCategory());
-            if (newCategory == null) {
-                System.out.println("new category is null");
-                return "No category with id: " + bannerData.getCurrentCategory();
+            Optional<Category> optNewCategory = categoryRepository.findByName(bannerData.getCategoryName());
+            Category newCategory;
+            if (optNewCategory.isEmpty()) {
+                return "No category with name: " + bannerData.getCategoryName();
+            } else {
+                newCategory = optNewCategory.get();
             }
 
-            newCategory.addBanner(banner.get());
-            categoryService.saveCategory(newCategory);
+            newCategory.addBanner(banner);
+            categoryRepository.save(newCategory);
 
-            banner.get().setCategoryId(newCategory);
-            bannerRepository.save(banner.get());
+            banner.setCategory(newCategory);
+            bannerRepository.save(banner);
         }
 
-        banner.get().setName(bannerData.getBannerName());
-        banner.get().setContent(bannerData.getBannerText());
-        banner.get().setPrice(bannerData.getPrice());
-        banner.get().setDeleted(false);
+        banner.setName(bannerData.getBannerName());
+        banner.setContent(bannerData.getBannerText());
+        banner.setPrice(bannerData.getPrice());
+        banner.setDeleted(false);
 
-        bannerRepository.save(banner.get());
+        bannerRepository.save(banner);
 
         return null;
     }
 
-    public String deleteBanner(BannerDto bannerData){
-        Long bannerId = bannerData.getBannerId();
-        Optional<Banner> banner = bannerRepository.findById(bannerId);
-        if(!banner.isPresent()){
-            return  "no banner with id = "+bannerData.getBannerId();
+    @Override
+    @Transactional
+    public String deleteBanner(BannerDto.BannerDelete bannerData){
+
+        Optional<Banner> optBanner = bannerRepository.findById(bannerData.getId());
+        Banner banner;
+        if(optBanner.isEmpty()){
+            return "No banner with id: " + bannerData.getId();
+        } else {
+            banner = optBanner.get();
         }
 
-        Category category = categoryService.findByCategoryName(bannerData.getCategory_id());
-        if(category==null){
-            return "no category with name = "+ bannerData.getCategory_id();
+        Optional<Category> optCategory = categoryRepository.findByName(banner.getCategory().getName());
+        Category category;
+        if(optCategory.isEmpty()){
+            return "no category with name = "+ bannerData.getId();
+        } else {
+            category = optCategory.get();
         }
 
-        category.removeBanner(banner.get());
-        categoryService.saveCategory(category);
+        category.removeBanner(banner);
+        categoryRepository.save(category);
 
-        banner.get().setCategoryId(null);
-        banner.get().setDeleted(true);
-        bannerRepository.save(banner.get());
+        banner.setCategory(null);
+        banner.setDeleted(true);
+        bannerRepository.save(banner);
         return  null;
     }
 
-    public void saveBanner(Banner banner) {
-        bannerRepository.save(banner);
-    }
-
-    public Optional<Banner> findBannerById(Long bannerId){
-        return bannerRepository.findById(bannerId);
-    }
-
+    @Override
+    @Transactional(readOnly = true)
     public Iterable<Banner> findAllBanners(){
-        return bannerRepository.findAll();
+        return new ArrayList<>(bannerRepository.findBannerByDeletedIsFalse());
     }
 }

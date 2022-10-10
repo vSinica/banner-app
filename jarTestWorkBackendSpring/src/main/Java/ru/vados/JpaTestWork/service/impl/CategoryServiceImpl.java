@@ -1,51 +1,46 @@
-package ru.vados.JpaTestWork.service.impl;
+package ru.vados.JpaTestWork.Service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-import ru.vados.JpaTestWork.DTO.CategoryDto;
-import ru.vados.JpaTestWork.model.Banner;
-import ru.vados.JpaTestWork.model.Category;
-import ru.vados.JpaTestWork.repository.CategoryRepository;
-import ru.vados.JpaTestWork.service.CategoryService;
+import org.springframework.transaction.annotation.Transactional;
+import ru.vados.JpaTestWork.Dto.CategoryDto;
+import ru.vados.JpaTestWork.Entity.Banner;
+import ru.vados.JpaTestWork.Entity.Category;
+import ru.vados.JpaTestWork.Repository.CategoryRepository;
+import ru.vados.JpaTestWork.Service.CategoryService;
 
+import javax.validation.Valid;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
-    ObjectMapper objectMapper = new ObjectMapper();
-    
-    CategoryRepository categoryRepository;
-
-    @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final CategoryRepository categoryRepository;
 
     @Override
-    public String addCategory(CategoryDto newCategoryData){
-        String categoryReqId = null;
-        String categoryName = null;
+    @Transactional
+    public String addCategory(@Valid CategoryDto.CategoryCreate newCategoryData){
 
-        if(newCategoryData.getCategory_name()!= null && !newCategoryData.getCategory_name().equals(""))
-            categoryName = newCategoryData.getCategory_name();
-        else return  "Имя категории некорректно";
-
-        if(existsCategoryByName(categoryName))
+        if(existsCategoryByName(newCategoryData.getCategoryName()))
             return "Категория с таким именем уже есть ";
 
-        if(newCategoryData.getCategoryReqId()!=null && !newCategoryData.getCategoryReqId().equals(""))
-            categoryReqId = newCategoryData.getCategoryReqId();
-        else return  "Request id категории некорректно ";
-
         Category category = new Category();
-        category.setName(categoryName);
-        category.setReqName(categoryReqId);
+
+        if(newCategoryData.getCategoryName()== null || newCategoryData.getCategoryName().isBlank()) {
+            return "Имя категории пустое";
+        }
+        else category.setName(newCategoryData.getCategoryName());
+
+        if(newCategoryData.getCategoryReqId()==null || newCategoryData.getCategoryReqId().isBlank()) {
+            return "Request id категории некорректно ";
+        }
+        else category.setReqName(newCategoryData.getCategoryReqId());
+
         category.setDeleted(false);
         categoryRepository.save(category);
 
@@ -53,101 +48,82 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public String deleteCategory(CategoryDto categoryData) throws JsonProcessingException {
-        Optional<Category> category;
+    @Transactional
+    public String deleteCategory(CategoryDto.CategoryUpdate categoryData) throws JsonProcessingException {
 
         Long idCategory = categoryData.getIdCategory();
         if(idCategory == null)
-            return "id кактегории равно null ";
+            return "id кактегории пустое ";
 
         if(!existsCategoryById(idCategory)){
             return "категории с таким id нет";
         }
 
-        category = Optional.ofNullable(findCategoryById(idCategory));
+        List<Banner> banners = categoryRepository.findById(idCategory)
+                .map(Category::getBanners)
+                .orElse(null);
 
-        if(category.get().hasBanner())
+        if(banners!=null && !banners.isEmpty())
         {
-            List<Banner> banners = category.get().getBanners();
-            String messageToClient = "Нельзя удалить категорию так как в ней есть банеры. Вот их список: ";
+            StringBuilder messageToClient = new StringBuilder("Нельзя удалить категорию так как в ней есть банеры. Вот их список: ");
             for (Banner baner:banners) {
-                messageToClient+= "  ";
-                messageToClient+= baner.getName();
+                messageToClient.append("  ");
+                messageToClient.append(baner.getName());
             }
-
-            return objectMapper.writeValueAsString(messageToClient);
+            return objectMapper.writeValueAsString(messageToClient.toString());
         }
 
-        deleteById(idCategory);
+        categoryRepository.deleteById(idCategory);
         return null;
     }
 
     @Override
-    public String updateCategory(CategoryDto categoryData){
-        String categoryReqId = null;
-        String categoryName = null;
+    @Transactional
+    public String updateCategory(CategoryDto.CategoryUpdate categoryData){
+        Optional<Category> optCategory = categoryRepository.findById(categoryData.getIdCategory());
+        Category category = null;
+        if(optCategory.isEmpty()){
+            return "несуществующий идентификатор категории";
+        } else {
+            category = optCategory.get();
+        }
 
-        if(categoryData.getCategory_name()!=null && !categoryData.getCategory_name().equals(""))
-            categoryName = categoryData.getCategory_name();
-        else return  "Имя категории некорректно ";
+        if(categoryData.getCategoryName()==null || categoryData.getCategoryName().isBlank()) {
+            return "Имя категории пустое";
+        }
+        else category.setName(categoryData.getCategoryName());
 
 
-        if(categoryData.getCategoryReqId()!=null && !Objects.equals(categoryData.getCategoryReqId(), ""))
-            categoryReqId = categoryData.getCategoryReqId();
-        else return "Request id категории некорректно ";
+        if(categoryData.getCategoryReqId()==null || categoryData.getCategoryReqId().isBlank()) {
+            return "Request id категории пустое";
+        }
+        else category.setReqName(categoryData.getCategoryReqId());
 
-        Category category = findCategoryById(categoryData.getIdCategory());
-
-        category.setName(categoryName);
-        category.setReqName(categoryReqId);
-        saveCategory(category);
+        categoryRepository.save(category);
 
         return null;
     }
     
     @Override
+    @Transactional(readOnly = true)
     public Boolean existsCategoryByName(String categoryName) {
         return categoryRepository.existsCategoryByName(categoryName);
     }
 
     @Override
-    public void saveCategory(Category category) {
-        categoryRepository.save(category);
-    }
-
-    @Override
+    @Transactional(readOnly = true)
     public List<Category> findAllCategory() {
         return categoryRepository.findAllByDeletedFalse();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Boolean existsCategoryById(Long idCategory) {
         return categoryRepository.existsCategoryById(idCategory);
     }
 
     @Override
-    public Category findCategoryById(Long idCategory) {
-        Optional<Category> category = categoryRepository.findById(idCategory);
-        if(category.isPresent()){
-            return category.get();
-        }
-        else{
-            return null;
-        }
-    }
-
-    @Override
-    public Category findByCategoryName(String name){
-        return categoryRepository.findByName(name);
-    }
-
-
-    @Override
-    public void deleteById(Long idCategory) {
-        categoryRepository.deleteById(idCategory);
-    }
-
-    @Override
+    @Transactional(readOnly = true)
     public List<String> getAllCategoryNames(){
         return categoryRepository.getAllCategoryNames();
     }

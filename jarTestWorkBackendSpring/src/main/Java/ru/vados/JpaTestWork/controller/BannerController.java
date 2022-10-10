@@ -5,19 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import ru.vados.JpaTestWork.DTO.BannerDto;
-import ru.vados.JpaTestWork.model.Banner;
-import ru.vados.JpaTestWork.model.Category;
-import ru.vados.JpaTestWork.repository.RequestRepository;
-import ru.vados.JpaTestWork.service.BannerService;
-import ru.vados.JpaTestWork.service.CategoryService;
-
-import java.util.Optional;
+import ru.vados.JpaTestWork.Dto.BannerDto;
+import ru.vados.JpaTestWork.Repository.RequestRepository;
+import ru.vados.JpaTestWork.Service.BannerService;
+import ru.vados.JpaTestWork.Service.CategoryService;
 
 @RestController
 @CrossOrigin
@@ -39,22 +34,19 @@ public class BannerController {
     ObjectMapper objectMapper = new ObjectMapper();
 
     @PostMapping("/AddBanner")
-    @Transactional
-    public ResponseEntity<String> addBanner(@RequestBody BannerDto bannerData) {
+    public ResponseEntity<String> addBanner(@RequestBody BannerDto.BannerCreate bannerData) {
         return ResponseEntity.status(HttpStatus.OK).
                 body(bannerService.addBanner(bannerData));
     }
 
     @PostMapping("/UpdateBanner")
-    @Transactional
-    public ResponseEntity<String> updateBanner(@RequestBody BannerDto bannerData) {
+    public ResponseEntity<String> updateBanner(@RequestBody BannerDto.BannerUpdate bannerData) {
         return ResponseEntity.status(HttpStatus.OK).
                 body(bannerService.updateBanner(bannerData));
     }
 
     @PostMapping("/DeleteBanner")
-    @Transactional
-    public ResponseEntity<String> deleteBanner(@RequestBody BannerDto bannerData) {
+    public ResponseEntity<String> deleteBanner(@RequestBody BannerDto.BannerDelete bannerData) {
         return ResponseEntity.status(HttpStatus.OK).
                 body(bannerService.deleteBanner(bannerData));
     }
@@ -65,7 +57,6 @@ public class BannerController {
                 body(objectMapper.writeValueAsString(categoryService.getAllCategoryNames()));
     }
 
-    @Transactional
     @PostMapping("/GetBanners")
     public ResponseEntity<String> getBanners() throws JsonProcessingException {
         return ResponseEntity.status(HttpStatus.OK).

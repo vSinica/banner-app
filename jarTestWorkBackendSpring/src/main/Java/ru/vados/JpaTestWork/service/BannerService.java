@@ -1,15 +1,13 @@
-package ru.vados.JpaTestWork.service;
+package ru.vados.JpaTestWork.Service;
 
-import ru.vados.JpaTestWork.DTO.BannerDto;
-import ru.vados.JpaTestWork.model.Banner;
+import ru.vados.JpaTestWork.Dto.BannerDto;
+import ru.vados.JpaTestWork.Entity.Banner;
 
-import java.util.Optional;
+import javax.validation.Valid;
 
 public interface BannerService {
-    void saveBanner(Banner banner);
-    Optional<Banner> findBannerById(Long bannerId);
     Iterable<Banner> findAllBanners();
-    String addBanner(BannerDto bannerData);
-    String updateBanner(BannerDto bannerData);
-    String deleteBanner(BannerDto bannerData);
+    String addBanner(@Valid BannerDto.BannerCreate bannerData);
+    String updateBanner(@Valid BannerDto.BannerUpdate bannerData);
+    String deleteBanner(@Valid BannerDto.BannerDelete bannerData);
 }

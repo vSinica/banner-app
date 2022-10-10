@@ -1,32 +1,27 @@
-package ru.vados.JpaTestWork.DTO;
+package ru.vados.JpaTestWork.Dto;
 
+import lombok.Data;
+
+import javax.validation.constraints.NotBlank;
+
+@Data
 public class CategoryDto {
 
-    private String category_name;
-    private String categoryReqId;
-    private Long idCategory;
-
-    public Long getIdCategory() {
-        return idCategory;
+    @Data
+    public static class CategoryCreate{
+        @NotBlank
+        String categoryName;
+        @NotBlank
+        String categoryReqId;
     }
 
-    public void setIdCategory(Long idCategory) {
-        this.idCategory = idCategory;
-    }
-
-    public String getCategory_name() {
-        return category_name;
-    }
-
-    public void setCategory_name(String category_name) {
-        this.category_name = category_name;
-    }
-
-    public String getCategoryReqId() {
-        return categoryReqId;
-    }
-
-    public void setCategoryReqId(String categoryReqId) {
-        this.categoryReqId = categoryReqId;
+    @Data
+    public static class CategoryUpdate{
+        @NotBlank
+        String categoryName;
+        @NotBlank
+        String categoryReqId;
+        @NotBlank
+        Long idCategory;
     }
 }
