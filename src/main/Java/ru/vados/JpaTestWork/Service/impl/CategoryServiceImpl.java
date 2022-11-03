@@ -27,17 +27,17 @@ public class CategoryServiceImpl implements CategoryService {
     public String addCategory(@Valid CategoryDto.CategoryCreate newCategoryData){
 
         if(existsCategoryByName(newCategoryData.getCategoryName()))
-            return "Категория с таким именем уже есть ";
+            return "Category with this name exist ";
 
         Category category = new Category();
 
         if(newCategoryData.getCategoryName()== null || newCategoryData.getCategoryName().isBlank()) {
-            return "Имя категории пустое";
+            return "Category name field is blank";
         }
         else category.setName(newCategoryData.getCategoryName());
 
         if(newCategoryData.getCategoryReqId()==null || newCategoryData.getCategoryReqId().isBlank()) {
-            return "Request id категории некорректно ";
+            return "Request id category is blank ";
         }
         else category.setReqName(newCategoryData.getCategoryReqId());
 
@@ -53,10 +53,10 @@ public class CategoryServiceImpl implements CategoryService {
 
         Long idCategory = categoryData.getIdCategory();
         if(idCategory == null)
-            return "id кактегории пустое ";
+            return "id category is empty ";
 
         if(!existsCategoryById(idCategory)){
-            return "категории с таким id нет";
+            return "category with this id not exist: "+ idCategory;
         }
 
         List<Banner> banners = categoryRepository.findById(idCategory)
@@ -65,7 +65,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         if(banners!=null && !banners.isEmpty())
         {
-            StringBuilder messageToClient = new StringBuilder("Нельзя удалить категорию так как в ней есть банеры. Вот их список: ");
+            StringBuilder messageToClient = new StringBuilder("You can't delete a category because it has banners. Here is their list: ");
             for (Banner baner:banners) {
                 messageToClient.append("  ");
                 messageToClient.append(baner.getName());
@@ -83,19 +83,19 @@ public class CategoryServiceImpl implements CategoryService {
         Optional<Category> optCategory = categoryRepository.findById(categoryData.getIdCategory());
         Category category = null;
         if(optCategory.isEmpty()){
-            return "несуществующий идентификатор категории";
+            return "not exist catogory id";
         } else {
             category = optCategory.get();
         }
 
         if(categoryData.getCategoryName()==null || categoryData.getCategoryName().isBlank()) {
-            return "Имя категории пустое";
+            return "name category is blank";
         }
         else category.setName(categoryData.getCategoryName());
 
 
         if(categoryData.getCategoryReqId()==null || categoryData.getCategoryReqId().isBlank()) {
-            return "Request id категории пустое";
+            return "Request id category blank";
         }
         else category.setReqName(categoryData.getCategoryReqId());
 
