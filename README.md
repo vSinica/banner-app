@@ -3,8 +3,6 @@ This is service for create commerical banner and get him. Banner have category. 
 
 Work on Netty. Data base is postgres with flyway.
 
-FOR USE without frontend have src/main/resources/api.http with code for http client
-
 FOR USE  have src/main/resources/api.http with code for http client
 
 
