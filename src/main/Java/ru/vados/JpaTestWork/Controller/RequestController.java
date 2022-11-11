@@ -18,7 +18,7 @@ public class RequestController {
     private final RequestService requestService;
 
     @GetMapping("/bid")
-    public ResponseEntity<Object> getAdv(ServerHttpRequest request,
+    public ResponseEntity<String> getAdv(ServerHttpRequest request,
                                          @RequestParam("reqName")String reqName) throws JsonProcessingException, UnknownHostException {
         return requestService.getAdv(request, reqName);
     }

@@ -17,29 +17,24 @@ public class CategoryController {
 
     private final CategoryServiceImpl categoryService;
 
-    ObjectMapper objectMapper = new ObjectMapper();
-
     @PostMapping("/AddCategory")
-    public ResponseEntity<String> addCategory(@RequestBody CategoryDto.CategoryCreate newCategoryData)  {
-        return ResponseEntity.status(HttpStatus.OK).
-                body(categoryService.addCategory(newCategoryData));
+    public ResponseEntity<Void> addCategory(@RequestBody CategoryDto.CategoryCreate newCategoryData)  {
+        return categoryService.addCategory(newCategoryData);
     }
 
     @PostMapping("/GetCategories")
-    public ResponseEntity<String> getCategories() throws JsonProcessingException {
-        return ResponseEntity.status(HttpStatus.OK).
-                body(objectMapper.writeValueAsString(categoryService.findAllCategory()));
+    public ResponseEntity<Iterable<CategoryDto.Categoryitem>> getCategories() throws JsonProcessingException {
+        return categoryService.findAllCategory();
     }
 
     @PostMapping("/DeleteCategory")
-    public ResponseEntity<String> deleteCategory(@RequestBody CategoryDto.CategoryUpdate categoryData) throws JsonProcessingException {
-        return ResponseEntity.status(HttpStatus.OK).
-                body(categoryService.deleteCategory(categoryData));
+    public ResponseEntity<Void> deleteCategory(@RequestBody CategoryDto.CategoryUpdate categoryData) throws JsonProcessingException {
+        return categoryService.deleteCategory(categoryData);
+
     }
 
     @PostMapping("/UpdateCategory")
-    public ResponseEntity<String> updateCategory(@RequestBody CategoryDto.CategoryUpdate categoryData)  {
-       return  ResponseEntity.status(HttpStatus.OK).
-              body(categoryService.updateCategory(categoryData));
+    public ResponseEntity<Void> updateCategory(@RequestBody CategoryDto.CategoryUpdate categoryData)  {
+       return  categoryService.updateCategory(categoryData);
     }
 }

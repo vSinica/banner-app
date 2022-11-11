@@ -2,6 +2,7 @@ package ru.vados.JpaTestWork.Controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,52 +15,38 @@ import ru.vados.JpaTestWork.Repository.RequestRepository;
 import ru.vados.JpaTestWork.Service.BannerService;
 import ru.vados.JpaTestWork.Service.CategoryService;
 
+import java.util.List;
+
 @RestController
-@CrossOrigin
+@RequiredArgsConstructor
 public class BannerController {
 
-    CategoryService categoryService;
-    BannerService bannerService;
-
-    RequestRepository requestRepository;
-
-    @Autowired
-    public BannerController(CategoryService categoryService, BannerService bannerService, RequestRepository requestRepository) {
-        this.categoryService = categoryService;
-        this.bannerService = bannerService;
-        this.requestRepository = requestRepository;
-    }
-
+    private final BannerService bannerService;
 
     ObjectMapper objectMapper = new ObjectMapper();
 
     @PostMapping("/AddBanner")
-    public ResponseEntity<String> addBanner(@RequestBody BannerDto.BannerCreate bannerData) {
-        return ResponseEntity.status(HttpStatus.OK).
-                body(bannerService.addBanner(bannerData));
+    public ResponseEntity<Void> addBanner(@RequestBody BannerDto.BannerCreate bannerData) {
+        return bannerService.addBanner(bannerData);
     }
 
     @PostMapping("/UpdateBanner")
-    public ResponseEntity<String> updateBanner(@RequestBody BannerDto.BannerUpdate bannerData) {
-        return ResponseEntity.status(HttpStatus.OK).
-                body(bannerService.updateBanner(bannerData));
+    public ResponseEntity<Void> updateBanner(@RequestBody BannerDto.BannerUpdate bannerData) {
+        return bannerService.updateBanner(bannerData);
     }
 
     @PostMapping("/DeleteBanner")
-    public ResponseEntity<String> deleteBanner(@RequestBody BannerDto.BannerDelete bannerData) {
-        return ResponseEntity.status(HttpStatus.OK).
-                body(bannerService.deleteBanner(bannerData));
+    public ResponseEntity<Void> deleteBanner(@RequestBody BannerDto.BannerDelete bannerData) {
+        return bannerService.deleteBanner(bannerData);
     }
 
     @PostMapping("/GetCategoryNames")
-    public ResponseEntity<String> getCategoryNames() throws JsonProcessingException {
-        return ResponseEntity.status(HttpStatus.OK).
-                body(objectMapper.writeValueAsString(categoryService.getAllCategoryNames()));
+    public ResponseEntity<List<String>> getCategoryNames() throws JsonProcessingException {
+        return bannerService.getAllCategoryNames();
     }
 
     @PostMapping("/GetBanners")
-    public ResponseEntity<String> getBanners() throws JsonProcessingException {
-        return ResponseEntity.status(HttpStatus.OK).
-                body(objectMapper.writeValueAsString(bannerService.findAllBanners()));
+    public ResponseEntity<Iterable<BannerDto.BannerItem>> getBanners() throws JsonProcessingException {
+        return bannerService.findAllBanners();
     }
 }

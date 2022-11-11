@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "banners")
-public class Banner {
+public class BannerEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -25,13 +25,13 @@ public class Banner {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "banner")
     @Fetch(FetchMode.JOIN)
     @JsonIgnore
-    private List<Request> requests = new ArrayList<>();
+    private List<RequestEntity> requests = new ArrayList<>();
 
-    public void addRequest(Request request){
+    public void addRequest(RequestEntity request){
         this.requests.add(request);
     }
 
-    public void removeRequest(Request request){
+    public void removeRequest(RequestEntity request){
         this.requests.remove(request);
     }
 
@@ -44,9 +44,9 @@ public class Banner {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category")
     @Fetch(FetchMode.JOIN)
-    @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="name", scope = Category.class)
+    @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="name", scope = CategoryEntity.class)
     @JsonIdentityReference(alwaysAsId=true)
-    private Category category;
+    private CategoryEntity category;
 
     @Column(nullable = false)
     private String content;

@@ -1,17 +1,22 @@
 package ru.vados.JpaTestWork.Service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.vados.JpaTestWork.Dto.BannerDto;
-import ru.vados.JpaTestWork.Entity.Banner;
-import ru.vados.JpaTestWork.Entity.Category;
+import ru.vados.JpaTestWork.Entity.BannerEntity;
+import ru.vados.JpaTestWork.Entity.CategoryEntity;
+import ru.vados.JpaTestWork.Exception.NotFoundException;
 import ru.vados.JpaTestWork.Repository.BannerRepository;
 import ru.vados.JpaTestWork.Repository.CategoryRepository;
 import ru.vados.JpaTestWork.Service.BannerService;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,18 +27,18 @@ public class BannerServiceImpl implements BannerService {
 
     @Override
     @Transactional
-    public String addBanner(BannerDto.BannerCreate bannerData) {
+    public ResponseEntity<Void> addBanner(BannerDto.BannerCreate bannerData) {
 
-        Optional<Category> optCategory = categoryRepository.findByName(bannerData.getCategoryName());
+        Optional<CategoryEntity> optCategory = categoryRepository.findByName(bannerData.getCategoryName());
 
-        Category category;
+        CategoryEntity category;
         if(optCategory.isEmpty()) {
-            return "No category with name: "+bannerData.getCategoryName();
+            throw new NotFoundException("No category with name: "+bannerData.getCategoryName());
         } else {
             category = optCategory.get();
         }
 
-        Banner banner = new Banner();
+        BannerEntity banner = new BannerEntity();
         banner.setName(bannerData.getBannerName());
         banner.setContent(bannerData.getBannerText());
         banner.setPrice(bannerData.getPrice());
@@ -43,32 +48,32 @@ public class BannerServiceImpl implements BannerService {
         banner.setCategory(category);
         bannerRepository.save(banner);
         
-        return null;
+        return ResponseEntity.noContent().build();
     }
 
     @Override
     @Transactional
-    public String updateBanner(BannerDto.BannerUpdate bannerData){
+    public ResponseEntity<Void> updateBanner(BannerDto.BannerUpdate bannerData){
         Long bannerId = bannerData.getId();
 
-        Optional<Banner> optBanner = bannerRepository.findById(bannerId);
-        Banner banner;
+        Optional<BannerEntity> optBanner = bannerRepository.findById(bannerId);
+        BannerEntity banner;
         if(optBanner.isEmpty()){
-            return "No banner with id: " + bannerData.getId();
+            throw new NotFoundException("No banner with id: " + bannerData.getId());
         } else {
             banner = optBanner.get();
         }
 
         if (!banner.getCategory().getName().equals(bannerData.getCategoryName())){
 
-            Category oldCategory = banner.getCategory();
+            CategoryEntity oldCategory = banner.getCategory();
             oldCategory.removeBanner(banner);
             categoryRepository.save(oldCategory);
 
-            Optional<Category> optNewCategory = categoryRepository.findByName(bannerData.getCategoryName());
-            Category newCategory;
+            Optional<CategoryEntity> optNewCategory = categoryRepository.findByName(bannerData.getCategoryName());
+            CategoryEntity newCategory;
             if (optNewCategory.isEmpty()) {
-                return "No category with name: " + bannerData.getCategoryName();
+                throw new NotFoundException("No category with name: " + bannerData.getCategoryName());
             } else {
                 newCategory = optNewCategory.get();
             }
@@ -87,25 +92,25 @@ public class BannerServiceImpl implements BannerService {
 
         bannerRepository.save(banner);
 
-        return null;
+        return ResponseEntity.noContent().build();
     }
 
     @Override
     @Transactional
-    public String deleteBanner(BannerDto.BannerDelete bannerData){
+    public ResponseEntity<Void> deleteBanner(BannerDto.BannerDelete bannerData){
 
-        Optional<Banner> optBanner = bannerRepository.findById(bannerData.getId());
-        Banner banner;
+        Optional<BannerEntity> optBanner = bannerRepository.findById(bannerData.getId());
+        BannerEntity banner;
         if(optBanner.isEmpty()){
-            return "No banner with id: " + bannerData.getId();
+            throw new NotFoundException("No banner with id: " + bannerData.getId());
         } else {
             banner = optBanner.get();
         }
 
-        Optional<Category> optCategory = categoryRepository.findByName(banner.getCategory().getName());
-        Category category;
+        Optional<CategoryEntity> optCategory = categoryRepository.findByName(banner.getCategory().getName());
+        CategoryEntity category;
         if(optCategory.isEmpty()){
-            return "no category with name = "+ bannerData.getId();
+            throw new NotFoundException("no category with name = "+ bannerData.getId());
         } else {
             category = optCategory.get();
         }
@@ -116,12 +121,32 @@ public class BannerServiceImpl implements BannerService {
         banner.setCategory(null);
         banner.setDeleted(true);
         bannerRepository.save(banner);
-        return  null;
+        return ResponseEntity.noContent().build();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Iterable<Banner> findAllBanners(){
-        return new ArrayList<>(bannerRepository.findBannerByDeletedIsFalse());
+    public ResponseEntity<Iterable<BannerDto.BannerItem>> findAllBanners(){
+        return  ResponseEntity.status(HttpStatus.OK).body(
+                bannerRepository.findBannerByDeletedIsFalse().stream().map(this::convert).collect(Collectors.toList())
+        );
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ResponseEntity<List<String>> getAllCategoryNames(){
+        return  ResponseEntity.ok(
+                categoryRepository.getAllCategoryNames()
+        );
+    }
+
+    private BannerDto.BannerItem convert(BannerEntity banner){
+        return new BannerDto.BannerItem(
+                banner.getId(),
+                banner.getName(),
+                banner.getPrice(),
+                banner.getContent(),
+                banner.getDeleted()
+        );
     }
 }

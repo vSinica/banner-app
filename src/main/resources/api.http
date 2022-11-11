@@ -13,14 +13,13 @@ POST http://localhost:8080/UpdateCategory
 Content-Type: application/json
 
 {
-  "categoryName": "category1 updated",
+  "categoryName": "cesrgeshesd",
   "categoryReqId": "category1reqId updated",
-  "idCategory": 1
+  "idCategory": 5555
 }
 
 ###
 POST http://localhost:8080/GetCategories
-
 
 ###
 POST http://localhost:8080/DeleteCategory

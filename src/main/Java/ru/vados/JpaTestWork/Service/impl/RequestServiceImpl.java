@@ -7,9 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.vados.JpaTestWork.Entity.Banner;
-import ru.vados.JpaTestWork.Entity.Category;
-import ru.vados.JpaTestWork.Entity.Request;
+import ru.vados.JpaTestWork.Entity.BannerEntity;
+import ru.vados.JpaTestWork.Entity.CategoryEntity;
+import ru.vados.JpaTestWork.Entity.RequestEntity;
+import ru.vados.JpaTestWork.Exception.NotFoundException;
 import ru.vados.JpaTestWork.Repository.BannerRepository;
 import ru.vados.JpaTestWork.Repository.CategoryRepository;
 import ru.vados.JpaTestWork.Repository.RequestRepository;
@@ -36,35 +37,33 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     @Transactional
-    public ResponseEntity<Object> getAdv(ServerHttpRequest request, String reqName) throws JsonProcessingException, UnknownHostException {
+    public ResponseEntity<String> getAdv(ServerHttpRequest request, String reqName) throws JsonProcessingException, UnknownHostException {
 
-        Category category;
-        Optional<Category> optCategory = categoryRepository.findCategoryByReqName(reqName);
+        CategoryEntity category;
+        Optional<CategoryEntity> optCategory = categoryRepository.findCategoryByReqName(reqName);
         if(optCategory.isPresent()){
             category = optCategory.get();
         } else {
-            return ResponseEntity.noContent().header("Error",
-                    objectMapper.writeValueAsString("No category with req name: "+ reqName)).build();
+            throw new NotFoundException("No category with req name: " + reqName);
         }
 
-        List<Banner> banners = category.getBanners();
+        List<BannerEntity> banners = category.getBanners();
         if(banners.isEmpty()){
-            return ResponseEntity.noContent().header("Error",
-                    objectMapper.writeValueAsString("No banners with req name: "+ reqName)).build();
+            throw new NotFoundException("No banners with req name: " + reqName);
         }
 
-        Request newRequest = new Request();
+        RequestEntity newRequest = new RequestEntity();
         newRequest.setUserAgent(request.getHeaders().getFirst("User-Agent"));
         newRequest.setIpAddress(Inet4Address.getLocalHost().getHostAddress());
         newRequest.setDatetime(Timestamp.from(Instant.now()));
 
-        List<Request> requestLastDayList = requestRepository.findLastDayRequest();
-        List<Banner> banersMaxCost = new ArrayList<>();
+        List<RequestEntity> requestLastDayList = requestRepository.findLastDayRequest();
+        List<BannerEntity> banersMaxCost = new ArrayList<>();
         float maxCost = 0;
 
-        for (Banner banner : banners) {
+        for (BannerEntity banner : banners) {
             boolean hasRequestForThisDayAndThisIp = false;
-            for (Request currentRequest : requestLastDayList) {
+            for (RequestEntity currentRequest : requestLastDayList) {
 
                 if(!(currentRequest.getIpAddress().equals(newRequest.getIpAddress())) && !(currentRequest.getUserAgent().equals(newRequest.getUserAgent()))){
                     hasRequestForThisDayAndThisIp = true;

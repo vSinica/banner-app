@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "category")
-public class Category {
+public class CategoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -26,13 +26,13 @@ public class Category {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL)
     @Fetch(FetchMode.JOIN)
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
-    private List<Banner> banners = new ArrayList<>();
+    private List<BannerEntity> banners = new ArrayList<>();
 
-    public void addBanner(Banner banner){
+    public void addBanner(BannerEntity banner){
         this.banners.add(banner);
     }
 
-    public void removeBanner(Banner banner){
+    public void removeBanner(BannerEntity banner){
         this.banners.remove(banner);
     }
 

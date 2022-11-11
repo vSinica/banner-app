@@ -7,5 +7,5 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import java.net.UnknownHostException;
 
 public interface RequestService {
-    ResponseEntity<Object> getAdv(ServerHttpRequest request, String reqName) throws JsonProcessingException, UnknownHostException;
+    ResponseEntity<String> getAdv(ServerHttpRequest request, String reqName) throws JsonProcessingException, UnknownHostException;
 }

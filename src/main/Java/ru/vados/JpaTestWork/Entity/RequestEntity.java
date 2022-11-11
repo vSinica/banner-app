@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Entity
 @Table(name = "requests")
-public class Request {
+public class RequestEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -20,7 +20,7 @@ public class Request {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "banner")
-    private Banner banner;
+    private BannerEntity banner;
 
     private String userAgent;
 

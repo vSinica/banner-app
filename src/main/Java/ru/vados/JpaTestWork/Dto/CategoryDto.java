@@ -1,6 +1,7 @@
 package ru.vados.JpaTestWork.Dto;
 
 import lombok.Data;
+import lombok.Value;
 
 import javax.validation.constraints.NotBlank;
 
@@ -24,4 +25,14 @@ public class CategoryDto {
         @NotBlank
         Long idCategory;
     }
+    @Value
+    public static class Categoryitem {
+        Long id;
+        String name;
+        String reqName;
+        Boolean deleted;
+    }
+
+
+
 }
