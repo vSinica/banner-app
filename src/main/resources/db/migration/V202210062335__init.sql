@@ -1,6 +1,6 @@
 create table category
 (
-    id       bigint       not null
+    id       bigserial       not null
         primary key,
     deleted  boolean      not null,
     name     varchar(255) not null,
@@ -9,7 +9,7 @@ create table category
 
 create table banners
 (
-    id       bigint       not null
+    id       bigserial       not null
         primary key,
     content  varchar(255) not null,
     deleted  boolean      not null,
@@ -22,7 +22,7 @@ create table banners
 
 create table requests
 (
-    id         bigint not null
+    id         bigserial
         primary key,
     datetime   timestamp,
     ip_address varchar(255),

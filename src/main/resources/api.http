@@ -4,7 +4,7 @@ POST http://localhost:8080/AddCategory
 Content-Type: application/json
 
 {
-  "categoryName": "category1",
+  "categoryName": "category8",
   "categoryReqId": "category1reqId"
 }
 

@@ -1,0 +1,4 @@
+truncate
+banners,
+category
+cascade;
