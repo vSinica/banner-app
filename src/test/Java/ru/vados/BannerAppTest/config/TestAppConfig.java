@@ -1,17 +1,16 @@
-package ru.vados.BannerApp.test.config;
+package ru.vados.BannerAppTest.config;
 
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.*;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import ru.vados.BannerApp.Config.ServiceConfig;
+import ru.vados.BannerApp.Config.YamlPropertySourceFactory;
 
 
 @SpringBootApplication(
@@ -21,13 +20,13 @@ import ru.vados.BannerApp.Config.ServiceConfig;
                 org.springframework.boot.autoconfigure.security.reactive.ReactiveUserDetailsServiceAutoConfiguration.class
         }
 )
-@Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = {"ru.vados.BannerApp.test"})
-@EnableConfigurationProperties
-@ConfigurationPropertiesScan
+@ComponentScan(basePackages = {"ru.vados.BannerAppTest"})
+@PropertySource(value = {
+        "classpath:config/application-test.yml"}, factory = YamlPropertySourceFactory.class)
 @EnableAsync
-@Import(ServiceConfig.class)
+@Import({ServiceConfig.class})
+@ActiveProfiles("test")
 public class TestAppConfig {
 
 

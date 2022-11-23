@@ -1,13 +1,11 @@
-package ru.vados.BannerApp.test;
+package ru.vados.BannerAppTest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import ru.vados.BannerApp.Dto.BannerDto;
-import ru.vados.BannerApp.Dto.CategoryDto;
 import ru.vados.BannerApp.Exception.NotFoundException;
 import ru.vados.BannerApp.Repository.BannerRepository;
 import ru.vados.BannerApp.Service.BannerService;
