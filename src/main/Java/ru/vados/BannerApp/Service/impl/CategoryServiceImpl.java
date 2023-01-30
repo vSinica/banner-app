@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.vados.BannerApp.Dto.CategoryDto;
 import ru.vados.BannerApp.Entity.BannerEntity;
 import ru.vados.BannerApp.Entity.CategoryEntity;
+import ru.vados.BannerApp.Exception.ExistException;
 import ru.vados.BannerApp.Exception.HaveBannerInCategoryWhenDelete;
 import ru.vados.BannerApp.Exception.NotFoundException;
 import ru.vados.BannerApp.Repository.CategoryRepository;
@@ -32,7 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
     public ResponseEntity<Void> addCategory(@Valid CategoryDto.CategoryCreate newCategoryData){
 
         if(existsCategoryByName(newCategoryData.getCategoryName()))
-            throw new NotFoundException("Category with " + newCategoryData.getCategoryName() + " name exist");
+            throw new ExistException("Category with " + newCategoryData.getCategoryName() + " name exist");
 
         CategoryEntity category = new CategoryEntity();
         category.setName(newCategoryData.getCategoryName());
@@ -50,7 +51,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         Long idCategory = categoryData.getIdCategory();
         if(!existsCategoryById(idCategory)){
-            throw new NotFoundException("category with " + idCategory + " id not exist");
+            throw new ExistException("category with " + idCategory + " id not exist");
         }
 
         List<BannerEntity> banners = categoryRepository.findById(idCategory)
@@ -74,13 +75,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public ResponseEntity<Void> updateCategory(CategoryDto.CategoryUpdate categoryData){
-        Optional<CategoryEntity> optCategory = categoryRepository.findById(categoryData.getIdCategory());
-        CategoryEntity category = null;
-        if(optCategory.isEmpty()){
-            throw new NotFoundException("not exist catogory with id:" + categoryData.getIdCategory());
-        } else {
-            category = optCategory.get();
-        }
+        CategoryEntity category = categoryRepository.findById(categoryData.getIdCategory())
+                .orElseThrow(() -> new ExistException("not exist catogory with id:" + categoryData.getIdCategory()));
 
         category.setName(categoryData.getCategoryName());
         category.setReqName(categoryData.getCategoryReqId());

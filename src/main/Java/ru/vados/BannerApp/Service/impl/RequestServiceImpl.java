@@ -39,13 +39,8 @@ public class RequestServiceImpl implements RequestService {
     @Transactional
     public ResponseEntity<String> getAdv(ServerHttpRequest request, String reqName) throws JsonProcessingException, UnknownHostException {
 
-        CategoryEntity category;
-        Optional<CategoryEntity> optCategory = categoryRepository.findCategoryByReqName(reqName);
-        if(optCategory.isPresent()){
-            category = optCategory.get();
-        } else {
-            throw new NotFoundException("No category with req name: " + reqName);
-        }
+        CategoryEntity category = categoryRepository.findCategoryByReqName(reqName)
+                .orElseThrow(() -> new NotFoundException("No category with req name: " + reqName));
 
         List<BannerEntity> banners = category.getBanners();
         if(banners.isEmpty()){

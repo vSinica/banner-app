@@ -28,14 +28,8 @@ public class BannerServiceImpl implements BannerService {
     @Transactional
     public ResponseEntity<Void> addBanner(BannerDto.BannerCreate bannerData) {
 
-        Optional<CategoryEntity> optCategory = categoryRepository.findByName(bannerData.getCategoryName());
-
-        CategoryEntity category;
-        if(optCategory.isEmpty()) {
-            throw new NotFoundException("No category with name: "+bannerData.getCategoryName());
-        } else {
-            category = optCategory.get();
-        }
+        CategoryEntity category = categoryRepository.findByName(bannerData.getCategoryName())
+                .orElseThrow(() -> new NotFoundException("No category with name: " + bannerData.getCategoryName()));
 
         BannerEntity banner = new BannerEntity();
         banner.setName(bannerData.getBannerName());
@@ -55,13 +49,8 @@ public class BannerServiceImpl implements BannerService {
     public ResponseEntity<Void> updateBanner(BannerDto.BannerUpdate bannerData){
         Long bannerId = bannerData.getId();
 
-        Optional<BannerEntity> optBanner = bannerRepository.findById(bannerId);
-        BannerEntity banner;
-        if(optBanner.isEmpty()){
-            throw new NotFoundException("No banner with id: " + bannerData.getId());
-        } else {
-            banner = optBanner.get();
-        }
+        BannerEntity banner = bannerRepository.findById(bannerId)
+                .orElseThrow(() -> new NotFoundException("No banner with id: " + bannerData.getId()));
 
         if (!banner.getCategory().getName().equals(bannerData.getCategoryName())){
 
@@ -69,13 +58,8 @@ public class BannerServiceImpl implements BannerService {
             oldCategory.removeBanner(banner);
             categoryRepository.save(oldCategory);
 
-            Optional<CategoryEntity> optNewCategory = categoryRepository.findByName(bannerData.getCategoryName());
-            CategoryEntity newCategory;
-            if (optNewCategory.isEmpty()) {
-                throw new NotFoundException("No category with name: " + bannerData.getCategoryName());
-            } else {
-                newCategory = optNewCategory.get();
-            }
+            CategoryEntity newCategory = categoryRepository.findByName(bannerData.getCategoryName())
+                    .orElseThrow(() -> new NotFoundException("No category with name: " + bannerData.getCategoryName()));
 
             newCategory.addBanner(banner);
             categoryRepository.save(newCategory);
@@ -98,21 +82,11 @@ public class BannerServiceImpl implements BannerService {
     @Transactional
     public ResponseEntity<Void> deleteBanner(BannerDto.BannerDelete bannerData){
 
-        Optional<BannerEntity> optBanner = bannerRepository.findById(bannerData.getId());
-        BannerEntity banner;
-        if(optBanner.isEmpty()){
-            throw new NotFoundException("No banner with id: " + bannerData.getId());
-        } else {
-            banner = optBanner.get();
-        }
+        BannerEntity banner = bannerRepository.findById(bannerData.getId())
+                .orElseThrow(() ->  new NotFoundException("No banner with id: " + bannerData.getId()));
 
-        Optional<CategoryEntity> optCategory = categoryRepository.findByName(banner.getCategory().getName());
-        CategoryEntity category;
-        if(optCategory.isEmpty()){
-            throw new NotFoundException("no category with name = "+ bannerData.getId());
-        } else {
-            category = optCategory.get();
-        }
+        CategoryEntity category = categoryRepository.findByName(banner.getCategory().getName())
+                .orElseThrow(() -> new NotFoundException("no category with name = "+ bannerData.getId()));
 
         category.removeBanner(banner);
         categoryRepository.save(category);
