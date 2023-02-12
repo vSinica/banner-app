@@ -12,13 +12,11 @@ import ru.vados.BannerApp.Entity.BannerEntity;
 import ru.vados.BannerApp.Entity.CategoryEntity;
 import ru.vados.BannerApp.Exception.ExistException;
 import ru.vados.BannerApp.Exception.HaveBannerInCategoryWhenDelete;
-import ru.vados.BannerApp.Exception.NotFoundException;
 import ru.vados.BannerApp.Repository.CategoryRepository;
 import ru.vados.BannerApp.Service.CategoryService;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,6 +32,9 @@ public class CategoryServiceImpl implements CategoryService {
 
         if(existsCategoryByName(newCategoryData.getCategoryName()))
             throw new ExistException("Category with " + newCategoryData.getCategoryName() + " name exist");
+
+        if(existsCategoryByReqName(newCategoryData.getCategoryReqId()))
+            throw new ExistException("Category with " + newCategoryData.getCategoryReqId() + " Req name exist");
 
         CategoryEntity category = new CategoryEntity();
         category.setName(newCategoryData.getCategoryName());
@@ -89,7 +90,13 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional(readOnly = true)
     public Boolean existsCategoryByName(String categoryName) {
-        return categoryRepository.existsCategoryByName(categoryName);
+        return categoryRepository.existsCategoryEntityByName(categoryName);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Boolean existsCategoryByReqName(String categoryReqName) {
+        return categoryRepository.existsCategoryEntityByReqName(categoryReqName);
     }
 
     @Override
@@ -103,7 +110,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional(readOnly = true)
     public Boolean existsCategoryById(Long idCategory) {
-        return categoryRepository.existsCategoryById(idCategory);
+        return categoryRepository.existsCategoryEntityById(idCategory);
     }
 
     private CategoryDto.Categoryitem convert(CategoryEntity category){

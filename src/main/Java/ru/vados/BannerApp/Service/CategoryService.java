@@ -11,6 +11,8 @@ public interface CategoryService {
     ResponseEntity<Iterable<CategoryDto.Categoryitem>> findAllCategory();
     Boolean existsCategoryById (Long idCategory);
 
+    Boolean existsCategoryByReqName(String categoryName);
+
     ResponseEntity<Void> addCategory(@Valid CategoryDto.CategoryCreate newCategoryData);
     ResponseEntity<Void> deleteCategory(@Valid CategoryDto.CategoryDelete categoryData) throws JsonProcessingException;
     ResponseEntity<Void> updateCategory(@Valid CategoryDto.CategoryUpdate categoryData);

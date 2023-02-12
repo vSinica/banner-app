@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import ru.vados.BannerApp.Dto.CategoryDto;
+import ru.vados.BannerApp.Exception.ExistException;
 import ru.vados.BannerApp.Exception.HaveBannerInCategoryWhenDelete;
-import ru.vados.BannerApp.Exception.NotFoundException;
 import ru.vados.BannerApp.Repository.CategoryRepository;
 import ru.vados.BannerApp.Service.CategoryService;
 
@@ -18,7 +18,7 @@ import ru.vados.BannerApp.Service.CategoryService;
                 "/sql/prepare-test-set1.sql"
         })
 })
-public class CategoryTest extends AbstractTest {
+public class CategoryServiceTest extends AbstractTest {
 
     @Autowired
     private CategoryService categoryService;
@@ -31,6 +31,7 @@ public class CategoryTest extends AbstractTest {
     private static final String EXIST_CATEGORY_NAME = "category1";
     private static final Long EXIST_CATEGORY_ID_WITHOUT_BANNERS = 2L;
     private static final Long NOT_EXIST_CATEGORY_ID = 222l;
+    private static final String EXIST_CATEGORY_REQ_NAME = "category1reqId";
 
 
     @Test
@@ -82,7 +83,7 @@ public class CategoryTest extends AbstractTest {
 
     @Test
     public void test__add_category_already_exist_exception() {
-        Assertions.assertThrows(NotFoundException.class, () -> {
+        Assertions.assertThrows(ExistException.class, () -> {
             categoryService.addCategory(new CategoryDto.CategoryCreate(
                     EXIST_CATEGORY_NAME,
                     "categoryReqId"
@@ -91,8 +92,18 @@ public class CategoryTest extends AbstractTest {
     }
 
     @Test
+    public void test__add_category_already_exist_req_name_exception() {
+        Assertions.assertThrows(ExistException.class, () -> {
+            categoryService.addCategory(new CategoryDto.CategoryCreate(
+                    NEW_CATEGORY_NAME,
+                    EXIST_CATEGORY_REQ_NAME
+            ));
+        });
+    }
+
+    @Test
     public void test__delete_category_not_exist_exception() {
-        Assertions.assertThrows(NotFoundException.class, () -> {
+        Assertions.assertThrows(ExistException.class, () -> {
             categoryService.deleteCategory(new CategoryDto.CategoryDelete(
                     NOT_EXIST_CATEGORY_ID
             ));
@@ -110,7 +121,7 @@ public class CategoryTest extends AbstractTest {
 
     @Test
     public void test__update_category_not_exist_category_exception() {
-        Assertions.assertThrows(NotFoundException.class, () -> {
+        Assertions.assertThrows(ExistException.class, () -> {
             categoryService.updateCategory(new CategoryDto.CategoryUpdate(
                     NEW_CATEGORY_NAME,
                     "newCategoryReqId",

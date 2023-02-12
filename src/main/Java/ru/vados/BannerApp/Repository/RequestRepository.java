@@ -12,4 +12,6 @@ public interface RequestRepository extends CrudRepository<RequestEntity,Long> {
 
     @Query(value="SELECT * FROM requests WHERE datetime >(NOW()-INTERVAL '1 DAY')",nativeQuery = true)
     List<RequestEntity> findLastDayRequest();
+
+    RequestEntity findByUserAgent(String userAgent);
 }

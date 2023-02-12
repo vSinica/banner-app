@@ -16,7 +16,7 @@ import ru.vados.BannerApp.Service.BannerService;
                 "/sql/prepare-test-set1.sql"
         })
 })
-public class BannerTest extends AbstractTest {
+public class BannerServiceTest extends AbstractTest {
 
     @Autowired
     private BannerService bannerService;

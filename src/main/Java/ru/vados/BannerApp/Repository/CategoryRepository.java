@@ -16,9 +16,11 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity,Long> {
 
     Optional<CategoryEntity> findByName(String categoryName);
 
-    Boolean existsCategoryByName(String categoryName);
+    Boolean existsCategoryEntityByName(String categoryName);
 
-    Boolean existsCategoryById(Long categoryId);
+    Boolean existsCategoryEntityById(Long categoryId);
+
+    Boolean existsCategoryEntityByReqName(String categoryReqName);
 
     @Query("SELECT c.id FROM CategoryEntity c where c.reqName =:reqName")
     Long findCategoryIdbByReqName(@Param("reqName") String reqName);

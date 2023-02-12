@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -57,18 +58,12 @@ public class RequestServiceImpl implements RequestService {
         float maxCost = 0;
 
         for (BannerEntity banner : banners) {
-            boolean hasRequestForThisDayAndThisIp = false;
-            for (RequestEntity currentRequest : requestLastDayList) {
 
-                if(!(currentRequest.getIpAddress().equals(newRequest.getIpAddress())) && !(currentRequest.getUserAgent().equals(newRequest.getUserAgent()))){
-                    hasRequestForThisDayAndThisIp = true;
-                }
-                if (currentRequest.getBanner().getId().equals(banner.getId())) {
-                    hasRequestForThisDayAndThisIp = true;
-                }
-            }
+            boolean hasRequestForThisDayAndThisIp = requestLastDayList.stream().noneMatch((a) -> !(a.getIpAddress().equals(newRequest.getIpAddress()))
+                    && !(a.getUserAgent().equals(newRequest.getUserAgent()))
+                    || a.getBanner().getId().equals(banner.getId()));
 
-            if (!hasRequestForThisDayAndThisIp) {
+            if (hasRequestForThisDayAndThisIp) {
                 if(maxCost == banner.getPrice()){
                     banersMaxCost.add(banner);
                 }
@@ -95,4 +90,8 @@ public class RequestServiceImpl implements RequestService {
         return ResponseEntity.ok(objectMapper.writeValueAsString(banersMaxCost.get(randomBanner).getContent()));
     }
 
+    @Override
+    public RequestEntity getRequestEntityByUserAgent(String userAgent){
+        return requestRepository.findByUserAgent(userAgent);
+    }
 }
