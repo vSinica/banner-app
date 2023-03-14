@@ -84,6 +84,9 @@ public class RequestServiceTest extends AbstractTest {
         Assertions.assertEquals(requestEntity.getUserAgent(),"test");
         Assertions.assertEquals(requestEntity.getBanner().getCategory().getReqName(),"category1reqId");
 
+        requestService.getAdv(request, "category1reqId");
+        Assertions.assertNull(requestService.getAdv(request, "category1reqId").getBody());
+
     }
 
 }

@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface RequestRepository extends CrudRepository<RequestEntity,Long> {
 
-    @Query(value="SELECT * FROM requests WHERE datetime >(NOW()-INTERVAL '1 DAY')",nativeQuery = true)
+    @Query("SELECT r FROM RequestEntity r WHERE r.datetime  > (current_date() - 1)")
     List<RequestEntity> findLastDayRequest();
 
     RequestEntity findByUserAgent(String userAgent);
