@@ -1,4 +1,5 @@
 truncate
 banners,
-category
+category,
+requests
 cascade;

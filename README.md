@@ -5,6 +5,9 @@ Work on Netty. Data base is postgres with flyway.
 
 FOR USE  have src/main/resources/api.http with code for http client
 
+Build docker image:  docker compose up -d --build
+
+
 
 
 

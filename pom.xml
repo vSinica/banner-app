@@ -14,9 +14,10 @@
 
     <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-      <maven.compiler.source>11</maven.compiler.source>
-      <maven.compiler.target>11</maven.compiler.target>
+      <maven.compiler.source>17</maven.compiler.source>
+      <maven.compiler.target>17</maven.compiler.target>
 
+      <start-class>ru.vados.BannerApp.App.BannerApp</start-class>
     </properties>
 
     <dependencies>
@@ -106,7 +107,7 @@
       <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
-        <version>1.18.12</version>
+        <version>1.18.26</version>
       </dependency>
 
 
@@ -160,6 +161,27 @@
       <finalName>spring-mvc-app</finalName>
       <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
         <plugins>
+          <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <configuration>
+              <mainClass>ru.vados.BannerApp.App.BannerApp</mainClass>
+              <layout>JAR</layout>
+            </configuration>
+
+            <executions>
+              <execution>
+                <id>pack</id>
+                <goals>
+                  <goal>repackage</goal>
+                </goals>
+                <configuration>
+                  <classifier>exec</classifier>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
