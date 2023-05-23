@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="spring-mvc-app">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/bannerApp/target/spring-mvc-app.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
