@@ -3,7 +3,6 @@ spring:
     name: gateway
   cloud:
     config:
-      uri: http://localhost:8001
-      fail-fast: true
-      password: admin
-      username: user
+      enabled: false
+  config:
+    import: optional:configserver:http://localhost:8001
