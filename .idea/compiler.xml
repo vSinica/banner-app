@@ -8,25 +8,28 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="BannerApp" />
-        <module name="registry" />
         <module name="config-service" />
+        <module name="app2" />
+        <module name="app1" />
         <module name="gateway" />
+        <module name="registry-discovery-eureka" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="bannerApp" target="17" />
       <module name="BannerAppModules" target="17" />
-      <module name="registry-discovery-eureka" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="BannerApp" options="-parameters" />
+      <module name="app1" options="-parameters" />
+      <module name="app2" options="-parameters" />
       <module name="banner-microservices" options="" />
       <module name="bannerApp" options="" />
       <module name="config-service" options="-parameters" />
       <module name="eureka-seerver" options="-parameters" />
       <module name="gateway" options="-parameters" />
-      <module name="registry" options="-parameters" />
       <module name="registry-discovery-eureka" options="-parameters" />
     </option>
   </component>

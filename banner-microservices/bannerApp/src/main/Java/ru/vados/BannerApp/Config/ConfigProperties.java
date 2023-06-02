@@ -7,6 +7,6 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @ComponentScan(basePackages = {"ru.vados.BannerApp"})
 @PropertySource(value = {
-        "src/main/resources/config/application-main.yml"}, factory = YamlPropertySourceFactory.class)
+        "src/main/resources/application.yml"}, factory = YamlPropertySourceFactory.class)
 public class ConfigProperties {
 }

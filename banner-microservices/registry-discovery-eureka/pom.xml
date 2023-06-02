@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>registry</artifactId>
+    <artifactId>registry-discovery-eureka</artifactId>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>

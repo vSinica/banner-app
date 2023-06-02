@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: banner-app
+  cloud:
+    config:
+      enabled: false
+  config:
+    import: optional:configserver:http://localhost:8001
