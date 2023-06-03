@@ -7,3 +7,6 @@ spring:
       fail-fast: true
       password: admin
       username: user
+      enabled: true
+  config:
+    import: optional:configserver:http://localhost:8001

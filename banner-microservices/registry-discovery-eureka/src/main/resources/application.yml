@@ -7,7 +7,7 @@ spring:
       fail-fast: true
       password: admin
       username: user
-      enabled: false
+      enabled: true
   config:
     import: optional:configserver:http://localhost:8001
 
@@ -21,5 +21,3 @@ eureka:
       waitTimeInMsWhenSyncEmpty: 0
   server:
     peer-node-read-timeout-ms: 100000
-server:
-  port: 8761
