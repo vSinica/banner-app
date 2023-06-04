@@ -22,11 +22,12 @@ spring:
     password: 123456
     driver-class-name: org.postgresql.Driver
 
+
   flyway:
     baseline-on-migrate: true
     out-of-order: true
 
 server:
   servlet:
-    context-path: /app1
+    context-path: /app2
   port: 8082

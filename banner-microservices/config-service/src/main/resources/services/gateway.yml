@@ -9,18 +9,45 @@ hystrix:
 ribbon:
   ReadTimeout: 20000
   ConnectTimeout: 20000
+  eureka:
+    enabled: false
+
 
 zuul:
   ignoredServices: '*'
   host:
     connect-timeout-millis: 20000
     socket-timeout-millis: 20000
-
   routes:
-    account-service:
-      path: /banners/**
-      serviceId: banner-app
-      stripPrefix: false
+    app1:
+      path: /app1/**
+      serviceId: app1
+      url:  http://localhost:8081
+
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      routes:
+        - id: app1
+          uri: lb://APP1
+          predicates:
+            - Path=/app1/**
+    discovery:
+      locator: true
+      lowerCaseServiceId: true
+      enabled: true
+    config:
+      uri: http://localhost:8081
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  register-with-eureka: true
+  fetch-registry: true
+
 
 
 server:

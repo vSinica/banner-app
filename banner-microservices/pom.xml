@@ -24,6 +24,7 @@
     <description>banner-microservices</description>
     <properties>
         <java.version>17</java.version>
+        <zuul-version>2.2.10.RELEASE</zuul-version>
     </properties>
 
     <dependencyManagement>
