@@ -13,7 +13,7 @@ public class App1Controller {
 
     @PostMapping("/addInfo")
     public void addInfo(@RequestBody App1Dto.App1CreateUpdateDelete info){
-
+        System.out.println("--------------");
     }
 
 }

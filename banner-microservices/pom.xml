@@ -10,6 +10,7 @@
         <module>gateway</module>
         <module>app1</module>
         <module>app2</module>
+        <module>sso</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

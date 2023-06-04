@@ -10,5 +10,6 @@
     <file url="file://$PROJECT_DIR$/banner-microservices/registry-discovery-eureka/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/banner-microservices/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/banner-microservices/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/banner-microservices/sso/src/main/java" charset="UTF-8" />
   </component>
 </project>

@@ -8,6 +8,7 @@ public class App1Dto {
 
     @Value
     public static class App1CreateUpdateDelete {
+        Long id;
         String info;
     }
 
