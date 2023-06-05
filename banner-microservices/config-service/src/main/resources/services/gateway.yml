@@ -23,6 +23,10 @@ zuul:
       path: /app1/**
       serviceId: app1
       url:  http://localhost:8081
+    app2:
+      path: /app2/**
+      serviceId: app2
+      url: http://localhost:8082
 
 spring:
   application:
@@ -31,9 +35,13 @@ spring:
     gateway:
       routes:
         - id: app1
-          uri: lb://APP1
+          uri: lb://app1
           predicates:
             - Path=/app1/**
+        - id: app2
+          uri: lb://app2
+          predicates:
+            - Path=/app2/**
     discovery:
       locator: true
       lowerCaseServiceId: true
