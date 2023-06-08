@@ -1,0 +1,53 @@
+
+
+###
+GET http://localhost:8989/app2/getInfo
+###
+POST http://192.168.3.199/api/template
+
+###
+GET http://localhost:8989/app1/addInfo
+Authorization: Bearer eyJraWQiOiI0OTQ4NjI0MS0xZDMzLTQxOGYtYmIyZS1hYzIxMDk0MDUzMDIiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJnYXRld2F5IiwiYXVkIjoiZ2F0ZXdheSIsIm5iZiI6MTY4NjIyMzAxMCwic2NvcGUiOlsib3BlbmlkIiwicmVzb3VyY2UucmVhZCJdLCJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6OTAwMCIsImV4cCI6MTY4NjIyMzMxMCwiaWF0IjoxNjg2MjIzMDEwfQ.JhBDqrcXdGjM5NAiRhVLFgnbj5D8ZrCgfrHyNlESkqLX47n6klFuiVeX6nzcvCTTLdKQfOo5XsQtkCtBLEljjrOwXswXbEOMj0ntCEzTagQYTTtHKUuhs0HDSWj3YPX1XuLtv8-91R-vLotO92HQrVgkCxiAMOIhBacja63KHtU0hNvzFzP3spyckYTjqEXUHB8p__MwigwP1QKUEiAVL1200IIucA7Xu4qhfokKFV4vYfPXahv7_fkjvOCxPmpCXp7idWIDZ_NgPNnMGJiuY6fSlyKRbGZNJxi1rT61XoOlOE4r0N1bU14FSD0cuVRVXFDfGzIoea7IXT3BcyyXhw
+
+
+###
+GET http://localhost:8989/actuator/gateway/routes
+
+
+
+###
+GET http://localhost:8989/app2/getInfo
+Authorization: Bearer eyJraWQiOiI0OTQ4NjI0MS0xZDMzLTQxOGYtYmIyZS1hYzIxMDk0MDUzMDIiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJnYXRld2F5IiwiYXVkIjoiZ2F0ZXdheSIsIm5iZiI6MTY4NjIyMzAxMCwic2NvcGUiOlsib3BlbmlkIiwicmVzb3VyY2UucmVhZCJdLCJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6OTAwMCIsImV4cCI6MTY4NjIyMzMxMCwiaWF0IjoxNjg2MjIzMDEwfQ.JhBDqrcXdGjM5NAiRhVLFgnbj5D8ZrCgfrHyNlESkqLX47n6klFuiVeX6nzcvCTTLdKQfOo5XsQtkCtBLEljjrOwXswXbEOMj0ntCEzTagQYTTtHKUuhs0HDSWj3YPX1XuLtv8-91R-vLotO92HQrVgkCxiAMOIhBacja63KHtU0hNvzFzP3spyckYTjqEXUHB8p__MwigwP1QKUEiAVL1200IIucA7Xu4qhfokKFV4vYfPXahv7_fkjvOCxPmpCXp7idWIDZ_NgPNnMGJiuY6fSlyKRbGZNJxi1rT61XoOlOE4r0N1bU14FSD0cuVRVXFDfGzIoea7IXT3BcyyXhw
+
+<> 2023-06-08T181733.200.html
+
+
+
+###
+GET http://localhost:8989/resource
+Authorization: Basic admin:password
+
+###
+
+# curl --location --request GET 'http://localhost:7777/oauth2/authorize?response_type=code&client_id=test-client&redirect_uri=http://localhost:5000/code
+GET http://localhost:9000/oauth2/authorize?response_type=code&client_id=gateway&redirect_uri=http://localhost:5000/code
+
+###
+GET http://localhost:9000/oauth2/authorize?response_type=code&client_id=gateway&redirect_uri=http://127.0.0.1:8080/authorized&scope=openid read
+
+
+
+###
+# curl -X POST 'http://localhost:9090/oauth2/token?grant_type=client_credentials'
+#  --header 'Authorization: Basic b2F1dGgtY2xpZW50Om9hdXRoLXNlY3JldA=='
+POST http://localhost:9000/oauth2/token?grant_type=client_credentials
+Authorization: Basic Z2F0ZXdheTpzZWNyZXQ=
+
+
+###
+
+# curl --location --request POST 'http://localhost:7777/oauth2/token?grant_type=client_credentials'
+#--header 'Authorization: Basic dGVzdC1jbGllbnQ6dGVzdC1jbGllbnQ='
+POST http://localhost:9000/oauth2/token?grant_type=authorization_code
+Authorization: Basic Z2F0ZXdheTpzZWNyZXQ=
+
