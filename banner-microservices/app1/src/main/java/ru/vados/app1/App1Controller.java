@@ -2,17 +2,32 @@ package ru.vados.app1;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
+
 
 @RestController
 @AllArgsConstructor
 public class App1Controller {
 
-    private final App1Service service;
+
+
+    @GetMapping(value = "/articles")
+    public String[] getArticles(
+            @RegisteredOAuth2AuthorizedClient("articles-client-authorization-code") OAuth2AuthorizedClient authorizedClient
+    ) {
+
+        return (String[]) Stream.of("dsgssfffffffff","dgbfsbs").toArray();
+    }
 
     @GetMapping("/addInfo")
     public ResponseEntity<Map<String, Object>> all(){
