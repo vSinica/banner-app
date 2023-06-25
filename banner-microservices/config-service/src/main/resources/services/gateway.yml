@@ -20,7 +20,7 @@ spring:
     gateway:
       routes:
         - id: app1
-          uri: lb://app1
+          uri: http://localhost:8081
           predicates:
             - Path=/app1/**
         - id: app2
@@ -69,7 +69,9 @@ eureka:
   register-with-eureka: true
   fetch-registry: true
 
-
-
 server:
   port: 8989
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
