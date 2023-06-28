@@ -35,27 +35,13 @@ spring:
 
   security:
     oauth2:
+      resource:
+        token-info-uri: http://localhost:9000/oauth/check_token
+        user-info-uri: http://localhost:9000/user
       client:
-        registration:
-          articles-client-oidc:
-            provider: spring
-            client-id: gateway
-            client-secret: secret
-            authorization-grant-type: authorization_code
-            redirect-uri: "http://localhost:8081/login/oauth2/code/{registrationId}"
-            scope: openid
-            client-name: articles-client-oidc
-          articles-client-authorization-code:
-            provider: spring
-            client-id: gateway
-            client-secret: secret
-            authorization-grant-type: authorization_code
-            redirect-uri: "http://localhost:8081/authorized"
-            scope: articles.read
-            client-name: articles-client-authorization-code
-        provider:
-          spring:
-            issuer-uri: http://localhost:9000
+        client-id: web-client
+        client-secret: 123456
+
 
 server:
   port: 8081

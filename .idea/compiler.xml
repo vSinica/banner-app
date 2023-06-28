@@ -8,18 +8,19 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="config-service" />
-        <module name="authorization-server" />
         <module name="BannerApp" />
         <module name="resource-server" />
         <module name="app2" />
         <module name="app1" />
         <module name="gateway" />
         <module name="registry-discovery-eureka" />
+        <module name="security-server" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="bannerApp" target="17" />
       <module name="BannerAppModules" target="17" />
+      <module name="security" target="11" />
       <module name="sso" target="11" />
     </bytecodeTargetLevel>
   </component>
@@ -28,7 +29,6 @@
       <module name="BannerApp" options="-parameters" />
       <module name="app1" options="-parameters" />
       <module name="app2" options="-parameters" />
-      <module name="authorization-server" options="-parameters" />
       <module name="banner-microservices" options="" />
       <module name="bannerApp" options="" />
       <module name="config-service" options="-parameters" />
@@ -36,6 +36,8 @@
       <module name="gateway" options="-parameters" />
       <module name="registry-discovery-eureka" options="-parameters" />
       <module name="resource-server" options="-parameters" />
+      <module name="security" options="-parameters" />
+      <module name="security-server" options="-parameters" />
       <module name="sso" options="-parameters" />
     </option>
   </component>

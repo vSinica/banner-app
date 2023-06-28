@@ -11,7 +11,7 @@
         <module>app1</module>
         <module>app2</module>
         <module>resource-server</module>
-        <module>authorization-server</module>
+        <module>security-server</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

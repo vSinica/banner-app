@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: spring security server
+  datasource:
+    name: cloudexample1
+    url: jdbc:postgresql://127.0.0.1:5432/${spring.datasource.name}
+    username: postgres
+    password: 123456
+    driver-class-name: org.postgresql.Driver
+
+server:
+  port: 9000
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    enabled: false

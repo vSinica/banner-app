@@ -70,7 +70,8 @@ eureka:
   fetch-registry: true
 
 server:
-  port: 8989
+  port: 9090
+
 
 logging:
   level:
