@@ -7,6 +7,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import ru.vados.BannerAppTest.config.TestAppConfig;
 @SpringBootTest(classes = {TestAppConfig.class})
-@Profile("test")
+@ActiveProfiles("test")
 public abstract class AbstractTest {
 }

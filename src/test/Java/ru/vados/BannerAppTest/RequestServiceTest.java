@@ -13,9 +13,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.util.MultiValueMap;
 import reactor.core.publisher.Flux;
-import ru.vados.BannerApp.Entity.RequestEntity;
-import ru.vados.BannerApp.Repository.RequestRepository;
-import ru.vados.BannerApp.Service.RequestService;
+import ru.vados.BannerApp.entity.RequestEntity;
+import ru.vados.BannerApp.service.RequestService;
 
 import java.net.URI;
 import java.net.UnknownHostException;

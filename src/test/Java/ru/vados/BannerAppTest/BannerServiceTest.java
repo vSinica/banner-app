@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
-import ru.vados.BannerApp.Dto.BannerDto;
-import ru.vados.BannerApp.Exception.NotFoundException;
-import ru.vados.BannerApp.Repository.BannerRepository;
-import ru.vados.BannerApp.Service.BannerService;
+import ru.vados.BannerApp.dto.BannerDto;
+import ru.vados.BannerApp.exception.NotFoundException;
+import ru.vados.BannerApp.repository.BannerRepository;
+import ru.vados.BannerApp.service.BannerService;
 
 @SqlGroup({
         @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {

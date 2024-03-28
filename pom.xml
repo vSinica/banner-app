@@ -17,7 +17,7 @@
       <maven.compiler.source>17</maven.compiler.source>
       <maven.compiler.target>17</maven.compiler.target>
 
-      <start-class>ru.vados.BannerApp.App.BannerApp</start-class>
+      <start-class>ru.vados.BannerApp.BannerApp</start-class>
     </properties>
 
     <dependencies>
@@ -165,7 +165,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-maven-plugin</artifactId>
             <configuration>
-              <mainClass>ru.vados.BannerApp.App.BannerApp</mainClass>
+              <mainClass>ru.vados.BannerApp.BannerApp</mainClass>
               <layout>JAR</layout>
             </configuration>
 

@@ -6,11 +6,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
-import ru.vados.BannerApp.Dto.CategoryDto;
-import ru.vados.BannerApp.Exception.ExistException;
-import ru.vados.BannerApp.Exception.HaveBannerInCategoryWhenDelete;
-import ru.vados.BannerApp.Repository.CategoryRepository;
-import ru.vados.BannerApp.Service.CategoryService;
+import ru.vados.BannerApp.dto.CategoryDto;
+import ru.vados.BannerApp.exception.ExistException;
+import ru.vados.BannerApp.exception.HaveBannerInCategoryWhenDelete;
+import ru.vados.BannerApp.repository.CategoryRepository;
+import ru.vados.BannerApp.service.CategoryService;
 
 @SqlGroup({
         @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {
